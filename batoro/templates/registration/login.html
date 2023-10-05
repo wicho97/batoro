@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %} Login {% endblock %}
+
+{% block content %}
+
+<div class="o-page__card o-page__card--horizontal">
+    <div class="c-card c-login-horizontal">
+        <div class="c-login__content-wrapper">
+            <header class="c-login__header">
+                <a class="c-login__icon c-login__icon--rounded c-login__icon--left" href="#!">
+                    <img src="{% static 'img/logo-login.svg' %}" alt="Dashboard's Logo">
+                </a>
+
+                <h2 class="c-login__title">Iniciar sesión</h2>
+            </header>
+            
+            <form class="c-login__content" action="{% url 'login' %}" method="post" id="custom-login">
+
+                {% csrf_token %}
+                <div class="c-field u-mb-small">
+                    <label class="c-field__label" for="input1">Usuario</label>
+                    {{ form.username }}
+                </div>
+
+                <div class="c-field u-mb-small">
+                    <label class="c-field__label" for="input2">Contrasena</label>
+                    {{ form.password }}
+                </div>
+
+                {% if form.errors %}
+                <div class="c-alert c-alert--danger alert fade show">
+                    <i class="c-alert__icon fa fa-times-circle"></i>Su nombre de usuario y contraseña no coinciden.
+                    Inténtalo de nuevo.
+
+                    <button class="c-close" data-dismiss="alert" type="button">&times;</button>
+                </div>
+                {% endif %}
+
+                <button class="c-btn c-btn--success c-btn--fullwidth" type="submit">Iniciar sesión</button>
+
+                <span class="c-divider u-mv-small"></span>
+
+                <a href="{% url "register" %}" class="c-btn c-btn--secondary c-btn--fullwidth">Crear cuenta</a>
+
+                <span class="c-divider u-mv-small"></span>
+
+                <a href="{% url "password_reset" %}" class="c-btn c-btn--secondary c-btn--fullwidth">¿Has olvidado tu contraseña?</a>
+            </form>
+        </div>
+
+        <div class="c-login__content-image">
+            <img src="{% static 'img/login2.jpg' %}" alt="Welcome to Dashboard UI Kit">
+
+            <h3>Inversiones Batoro Peru E.I.R.L.</h3>
+            <p class="u-text-large">Una interfaz diseñada para autónomos para ayudarles a gestionar su trabajo y sus clientes.</p>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

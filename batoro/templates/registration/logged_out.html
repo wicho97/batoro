@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %} Desconectado {% endblock %}
+
+{% block content %}
+
+<div class="o-page__card">
+  <div class="c-card u-mb-xsmall">
+      <header class="c-card__header u-text-center u-pt-large">
+          <a class="c-card__icon" href="#!">
+              <img src="{% static 'img/logo-login.svg' %}" alt="Dashboard's Logo">
+          </a>
+          <div class="row u-justify-center">
+              <div class="col-9">
+                  <h1 class="u-h3">Desconectado</h1>
+              </div>
+          </div>
+      </header>
+
+      <div class="c-card__body">
+        <h2 class="u-h5 u-text-center">
+          Ha sido desconectado exitosamente.
+        </h2>
+      </div>
+  </div>
+
+  <div class="o-line">
+    <a class="u-text-mute u-text-small" href="{% url "login" %}" title="Login">
+        <i class="fa fa-long-arrow-left u-mr-xsmall"></i>Puedes iniciar sesión nuevamente.
+    </a>
+  </div>
+</div>
+
+{% endblock %}

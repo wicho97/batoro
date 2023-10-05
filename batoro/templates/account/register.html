@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %} Registrar cuenta {% endblock %}
+
+{% block content %}
+
+<div class="o-page__card">
+    <div class="c-card u-mb-xsmall">
+        <header class="c-card__header u-pt-large">
+            <a class="c-card__icon" href="#!">
+                <img src="{% static 'img/logo-login.svg' %}" alt="Dashboard UI Kit">
+            </a>
+            <h1 class="u-h3 u-text-center u-mb-zero">Crear cuenta</h1>
+        </header>
+        
+        <form class="c-card__body" method="post">
+
+            {% csrf_token %}
+
+            <div class="c-field u-mb-small">
+                <label class="c-field__label">Nombre de usuario</label> 
+                {{ user_form.username }}
+                {% for error in user_form.username.errors %}
+                <small class="c-field__message u-color-danger">
+                    <i class="fa fa-times-circle"></i>{{ error }}
+                </small>
+                {% endfor %}
+            </div>
+
+            <div class="c-field u-mb-small">
+                <label class="c-field__label">Nombre</label>
+                {{ user_form.first_name }}
+                {% for error in user_form.first_name.errors %}
+                <small class="c-field__message u-color-danger">
+                    <i class="fa fa-times-circle"></i>{{ error }}
+                </small>
+                {% endfor %}
+            </div>
+
+            <div class="c-field u-mb-small">
+                <label class="c-field__label">Email</label> 
+                {{ user_form.email }}
+                {% for error in user_form.email.errors %}
+                <small class="c-field__message u-color-danger">
+                    <i class="fa fa-times-circle"></i>{{ error }}
+                </small>
+                {% endfor %}
+            </div>
+
+            <div class="c-field u-mb-small">
+                <label class="c-field__label">Contraseña</label> 
+                {{ user_form.password }}
+                {% for error in user_form.password.errors %}
+                <small class="c-field__message u-color-danger">
+                    <i class="fa fa-times-circle"></i>{{ error }}
+                </small>
+                {% endfor %}
+            </div>
+
+            <div class="c-field u-mb-small">
+                <label class="c-field__label">Repita la contraseña</label> 
+                {{ user_form.password2 }}
+                {% for error in user_form.password2.errors %}
+                <small class="c-field__message u-color-danger">
+                    <i class="fa fa-times-circle"></i>{{ error }}
+                </small>
+                {% endfor %}
+            </div>
+
+            <button class="c-btn c-btn--info c-btn--fullwidth" type="submit">Crear cuenta</button>
+
+        </form>
+    </div>
+
+    <div class="o-line">
+        <a class="u-text-mute u-text-small" href="{% url "login" %}" title="Login">
+            <i class="fa fa-long-arrow-left u-mr-xsmall"></i> Ya tienes una cuenta, inicia sesión en su lugar
+        </a>
+    </div>
+
+</div>
+
+{% endblock %}

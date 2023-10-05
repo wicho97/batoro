@@ -13,6 +13,12 @@ class UserRegistrationForm(forms.ModelForm):
                                widget=forms.PasswordInput)
     password2 = forms.CharField(label='Repeat password',
                                 widget=forms.PasswordInput)
+    
+    def __init__(self, *args, **kwargs):
+        super(UserRegistrationForm, self).__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'c-input'
+            visible.field.widget.attrs['autocomplete'] = 'off'
 
     class Meta:
         model = User
@@ -43,9 +49,21 @@ class UserEditForm(forms.ModelForm):
         if qs.exists():
             raise forms.ValidationError('Email already in use.')
         return data
+    
+    def __init__(self, *args, **kwargs):
+        super(UserEditForm, self).__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'c-input'
+            visible.field.widget.attrs['autocomplete'] = 'off'
 
 
 class ProfileEditForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ['date_of_birth', 'photo']
+        exclude = ['user']
+
+    def __init__(self, *args, **kwargs):
+        super(ProfileEditForm, self).__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'c-input'
+            visible.field.widget.attrs['autocomplete'] = 'off'

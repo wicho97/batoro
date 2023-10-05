@@ -1,0 +1,109 @@
+{% extends "base_2.html" %}
+
+{% load static %}
+
+{% block title %} Edita tu cuenta {% endblock %}
+
+{% block content %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12 u-mb-small">
+            <h1>Edita tu cuenta</h1>
+            <p>Puede editar su cuenta utilizando el siguiente formulario:</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 u-ml-auto u-mb-medium">
+            <div class="c-card u-p-medium u-mb-medium" data-mh="invoices-cards">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="c-field u-mb-small">
+                                <label class="c-field__label">Nombres</label> 
+                                {{ user_form.first_name }}
+                                {% for error in user_form.first_name.errors %}
+                                    <small class="c-field__message u-color-danger">
+                                        <i class="fa fa-times-circle"></i>{{ error }}
+                                    </small>
+                                {% endfor %}
+                            </div>
+        
+                            <div class="c-field u-mb-small">
+                                <label class="c-field__label">Apellidos</label> 
+                                {{ user_form.last_name }}
+                                {% for error in user_form.last_name.errors %}
+                                    <small class="c-field__message u-color-danger">
+                                        <i class="fa fa-times-circle"></i>{{ error }}
+                                    </small>
+                                {% endfor %}
+                            </div>
+        
+                            <div class="c-field u-mb-small">
+                                <label class="c-field__label">Email</label>
+                                {{ user_form.email }}
+                                {% for error in user_form.email.errors %}
+                                    <small class="c-field__message u-color-danger">
+                                        <i class="fa fa-times-circle"></i>{{ error }}
+                                    </small>
+                                {% endfor %}
+                            </div>
+                        </div>
+        
+                        <div class="col-lg-6">
+                            <div class="c-field u-mb-small">
+                                <label class="c-field__label" for="companyName">Fecha de Nacimiento</label>
+                                <div class="c-field has-addon-left">
+                                    <span class="c-field__addon"><i class="fa fa-calendar"></i></span>
+                                    {{ profile_form.date_of_birth }}
+                                </div>
+                                {% for error in profile_form.date_of_birth.errors %}
+                                    <small class="c-field__message u-color-danger">
+                                        <i class="fa fa-times-circle"></i>{{ error }}
+                                    </small>
+                                {% endfor %}
+                            </div>
+        
+                            <div class="c-field u-mb-small">
+                                <label class="c-field__label" for="website">Genero</label>
+                                {{ profile_form.gender }}
+                                {% for error in profile_form.gender.errors %}
+                                    <small class="c-field__message u-color-danger">
+                                        <i class="fa fa-times-circle"></i>{{ error }}
+                                    </small>
+                                {% endfor %}
+                            </div>
+    
+                            <div class="c-field u-mb-small">
+                                <label class="c-field__label" for="website">Foto</label>
+                                {{ profile_form.photo }}
+                                {% for error in profile_form.photo.errors %}
+                                    <small class="c-field__message u-color-danger">
+                                        <i class="fa fa-times-circle"></i>{{ error }}
+                                    </small>
+                                {% endfor %}
+                            </div>
+                        </div>
+    
+                        <div class="col-lg-12">
+                            <button class="c-btn c-btn--info" type="submit">Guardar cambios</button>
+                        </div>
+
+                        {% if messages %}
+                        <div class="col-lg-12 u-mt-medium">
+                            {% for message in messages %}
+                            <div class="c-alert {% if message.tags %} {{ message.tags }} {% endif %}">
+                                {{ message }}
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                </form>
+            </div><!-- // .c-card -->          
+        </div>
+    </div>
+</div><!-- // .container -->
+
+{% endblock %}

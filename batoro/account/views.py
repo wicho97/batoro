@@ -71,10 +71,9 @@ def edit(request):
         if user_form.is_valid() and profile_form.is_valid():
             user_form.save()
             profile_form.save()
-            messages.success(request, 'Profile updated '\
-                                      'successfully')
+            messages.success(request, 'Perfil actualizado con éxito')
         else:
-            messages.error(request, 'Error updating your profile')
+            messages.error(request, 'Error al actualizar tu perfil.')
     else:
         user_form = UserEditForm(instance=request.user)
         profile_form = ProfileEditForm(
@@ -82,4 +81,5 @@ def edit(request):
     return render(request,
                   'account/edit.html',
                   {'user_form': user_form,
-                   'profile_form': profile_form})
+                   'profile_form': profile_form,
+                   'section': 'account_settings'})
