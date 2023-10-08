@@ -5,13 +5,35 @@
         <a class="c-sidebar__brand" href="#">
             <img class="c-sidebar__brand-img" src="{% static "img/logo.png" %}" alt="Logo"> Batoro
         </a>
-        
+
         <h4 class="c-sidebar__title">Dashboards</h4>
         <ul class="c-sidebar__list">
             <li class="c-sidebar__item">
                 <a class="c-sidebar__link {% if section == "dashboard" %} is-active {% endif %}" href="{% url "dashboard" %}">
                     <i class="fa fa-table u-mr-xsmall"></i>Projects
                 </a>
+            </li>
+        </ul>
+        
+        <h4 class="c-sidebar__title">Proyectos</h4>
+        <ul class="c-sidebar__list">
+            <li class="c-sidebar__item has-submenu">
+                <a class="c-sidebar__link" data-toggle="collapse" href="#project-submenu" aria-expanded="false" aria-controls="project-submenu">
+                    <i class="fa fa-table u-mr-xsmall"></i>Proyectos
+                </a>
+                <ul class="c-sidebar__submenu collapse" id="project-submenu">
+                    <li><a class="c-sidebar__link" href="#">Ver Proyectos</a></li>
+                    <li><a class="c-sidebar__link" href="#">Crear Proyecto</a></li>
+                </ul>
+            </li>
+            <li class="c-sidebar__item has-submenu">
+                <a class="c-sidebar__link" data-toggle="collapse" href="#project-status-submenu" aria-expanded="false" aria-controls="project-status-submenu">
+                    <i class="fa fa-table u-mr-xsmall"></i>Estados
+                </a>
+                <ul class="c-sidebar__submenu collapse" id="project-status-submenu">
+                    <li><a class="c-sidebar__link" href="{% url "project:status_list" %}">Ver Estados</a></li>
+                    <li><a class="c-sidebar__link" href="{% url "project:status_create" %}">Crear Estado</a></li>
+                </ul>
             </li>
         </ul>
 

@@ -1,0 +1,50 @@
+{% extends "base_2.html" %}
+
+{% block title %} Proyecto - Editar Status {%endblock %}
+
+{% block content %}
+
+<div class="container">
+  <div class="row">
+    <div class="col-lg-12 u-mb-small">
+      <h1>Editar Estado de Proyecto</h1>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-12 u-ml-auto u-mb-medium">
+      <div class="c-card u-p-medium u-mb-medium" data-mh="invoices-cards">
+        <form method="post">
+          {% csrf_token %}
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="c-field u-mb-small">
+                <label class="c-field__label">Nombre</label>
+                {{ form.name }}
+              </div>
+            </div>
+            <div class="col-lg-12">
+              <button class="c-btn c-btn--info" type="submit">Actualizar</button>
+            </div>
+
+            {% if messages %}
+              <div class="col-lg-12 u-mt-small">
+                {% for message in messages %}
+                <div
+                  class="c-alert {% if message.tags %} {{ message.tags }} {% endif %} alert fade show"
+                >
+                  <i class="c-alert__icon fa fa-check-circle"></i> {{ message }}
+                  <button class="c-close" data-dismiss="alert" type="button">×</button>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+          </div>
+        </form>
+      </div>
+      <!-- // .c-card -->
+    </div>
+  </div>
+</div>
+<!-- // .container -->
+
+{% endblock %}
