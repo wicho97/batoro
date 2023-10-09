@@ -5,5 +5,3 @@ from .models import Status, Project
 
 admin.site.register(Status)
 admin.site.register(Project)
-
-
