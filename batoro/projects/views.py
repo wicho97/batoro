@@ -4,7 +4,6 @@ from django.views.generic import (
     ListView,
     CreateView,
     UpdateView,
-    DeleteView,
 )
 from django.urls import reverse_lazy
 from django.core.paginator import Paginator
@@ -78,20 +77,7 @@ class StatusUpdateView(UpdateView):
         return super(StatusUpdateView, self).form_valid(form)
 
 
-# class StatusDeleteView(DeleteView):
-#     model = Status
-#     template_name = 'projects/status_list.html'
-#     success_message = "El estado se ha borrado exitosamente."
-
-#     def get_success_url(self):
-#         return reverse_lazy('project:status_list')
-
-# def delete(self, request, *args, **kwargs):
-#     messages.success(self.request, self.success_message)
-#     return super().delete(request, *args, **kwargs)
-
-
-@method_decorator(login_required, name="dispatch")
+@login_required
 def delete_project_status(request, project_status_id):
     status = Status.objects.get(id=project_status_id)
     status.delete()
