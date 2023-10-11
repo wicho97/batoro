@@ -10,7 +10,7 @@ from django.core.paginator import Paginator
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
-
+from django.http import HttpResponseRedirect
 
 from .models import Status, Project
 from .forms import StatusForm
@@ -55,7 +55,7 @@ class StatusCreateView(CreateView):
     template_name = "projects/status_create.html"
     form_class = StatusForm
     success_message = "Creado con éxito."
-    success_url = reverse_lazy("project:status_create")
+    success_url = reverse_lazy("project:status_list")
 
     def form_valid(self, form):
         messages.success(self.request, self.success_message)
@@ -80,8 +80,10 @@ class StatusUpdateView(UpdateView):
 @login_required
 def delete_project_status(request, project_status_id):
     status = Status.objects.get(id=project_status_id)
+    status_name = status.name
+
     status.delete()
-    statuses = Status.objects.all()
-    context = {"statuses": statuses}
-    messages.success(request, "El estado se ha borrado exitosamente.")
-    return render(request, "projects/status_list.html", context)
+
+    messages.success(request, f"El estado {status_name} se ha borrado exitosamente.")
+
+    return HttpResponseRedirect(reverse_lazy("project:status_list"))
