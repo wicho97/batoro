@@ -38,8 +38,19 @@
             $("#id_date_of_birth").datepicker({
                 format: 'yyyy-mm-dd'
             });
+            $("#id_start_date").datepicker({
+                format: 'yyyy-mm-dd'
+            });
+            $("#id_finish_date").datepicker({
+                format: 'yyyy-mm-dd'
+            });
             $("#id_date_of_birth").attr('placeholder', '1990/12/25');
-            $("#id_gender").select2();
+            $("#id_start_date").attr('placeholder', '1990/12/25');
+            $("#id_finish_date").attr('placeholder', '1990/12/25');
+            $("#id_status").select2();
+            $("#id_project_manager").select2();
+            $("#id_client").select2();
+            $("#id_public").removeClass('c-input');
         </script>
         <script>
             function showAlert(status_id) {

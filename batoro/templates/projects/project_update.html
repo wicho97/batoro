@@ -1,0 +1,136 @@
+{% extends 'base_2.html' %}
+
+{% block title %}
+  Proyecto - Actualizar Proyecto
+{% endblock %}
+
+{% block content %}
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12 u-mb-small">
+        <h1>Actualizar Proyecto</h1>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-12 u-ml-auto u-mb-medium">
+        <div class="c-card u-p-medium u-mb-medium" data-mh="invoices-cards">
+          <form method="post">
+            {% csrf_token %}
+            <div class="row">
+              <div class="col-lg-12">
+                <div class="c-field u-mb-small">
+                  <label class="c-field__label">Público</label>
+                  {{ form.public }}
+                  {% for error in form.public.errors %}
+                    <small class="c-field__message u-color-danger">
+                      <i class="fa fa-times-circle"></i>{{ error }}
+                    </small>
+                  {% endfor %}
+                </div>
+              </div>
+              <div class="col-lg-12">
+                <div class="c-field u-mb-small">
+                  <label class="c-field__label">Nombre</label>
+                  {{ form.name }}
+                  {% for error in form.name.errors %}
+                    <small class="c-field__message u-color-danger">
+                      <i class="fa fa-times-circle"></i>{{ error }}
+                    </small>
+                  {% endfor %}
+                </div>
+              </div>
+              <div class="col-lg-12">
+                <div class="c-field u-mb-small">
+                  <label class="c-field__label">Descripción</label>
+                  {{ form.description }}
+                  {% for error in form.description.errors %}
+                    <small class="c-field__message u-color-danger">
+                      <i class="fa fa-times-circle"></i>{{ error }}
+                    </small>
+                  {% endfor %}
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="c-field u-mb-small">
+                  <label class="c-field__label">Fecha de inicio</label>
+                  <div class="c-field has-addon-left">
+                    <span class="c-field__addon"><i class="fa fa-calendar"></i></span>
+                    {{ form.start_date }}
+                  </div>
+                  {% for error in form.start_date.errors %}
+                    <small class="c-field__message u-color-danger">
+                      <i class="fa fa-times-circle"></i>{{ error }}
+                    </small>
+                  {% endfor %}
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="c-field u-mb-small">
+                  <label class="c-field__label">Fecha de finalización</label>
+                  <div class="c-field has-addon-left">
+                    <span class="c-field__addon"><i class="fa fa-calendar"></i></span>
+                    {{ form.finish_date }}
+                  </div>
+                  {% for error in form.finish_date.errors %}
+                    <small class="c-field__message u-color-danger">
+                      <i class="fa fa-times-circle"></i>{{ error }}
+                    </small>
+                  {% endfor %}
+                </div>
+              </div>
+              <div class="col-lg-4">
+                <div class="c-field u-mb-small">
+                  <label class="c-field__label">Estado</label>
+                  {{ form.status }}
+                  {% for error in form.status.errors %}
+                    <small class="c-field__message u-color-danger">
+                      <i class="fa fa-times-circle"></i>{{ error }}
+                    </small>
+                  {% endfor %}
+                </div>
+              </div>
+              <div class="col-lg-4">
+                <div class="c-field u-mb-small">
+                  <label class="c-field__label">Jefe de proyecto</label>
+                  {{ form.project_manager }}
+                  {% for error in form.project_manager.errors %}
+                    <small class="c-field__message u-color-danger">
+                      <i class="fa fa-times-circle"></i>{{ error }}
+                    </small>
+                  {% endfor %}
+                </div>
+              </div>
+              <div class="col-lg-4">
+                <div class="c-field u-mb-small">
+                  <label class="c-field__label">Cliente</label>
+                  {{ form.client }}
+                  {% for error in form.client.errors %}
+                    <small class="c-field__message u-color-danger">
+                      <i class="fa fa-times-circle"></i>{{ error }}
+                    </small>
+                  {% endfor %}
+                </div>
+              </div>
+              <div class="col-lg-12">
+                <button class="c-btn c-btn--info" type="submit">Actualizar</button>
+              </div>
+
+              {% if messages %}
+                <div class="col-lg-12 u-mt-small">
+                  {% for message in messages %}
+                    <div class="c-alert {% if message.tags %}{{ message.tags }}{% endif %} alert fade show">
+                      <i class="c-alert__icon fa fa-check-circle"></i> {{ message }}
+                      <button class="c-close" data-dismiss="alert" type="button">×</button>
+                    </div>
+                  {% endfor %}
+                </div>
+              {% endif %}
+            </div>
+          </form>
+        </div>
+        <!-- // .c-card -->
+      </div>
+    </div>
+  </div>
+  <!-- // .container -->
+{% endblock %}
