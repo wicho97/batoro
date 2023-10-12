@@ -53,10 +53,10 @@
             $("#id_public").removeClass('c-input');
         </script>
         <script>
-            function showAlert(status_id) {
-                console.log(status_id)
+            function showAlert(status_id, status_name) {
+                console.log(status_id, status_name)
                 Swal.fire({
-                    title: 'Estas seguro?',
+                    title: `Estas seguro de eliminar el estado <u>${status_name}</u>?`,
                     text: "¡No podrás revertir esto!",
                     icon: 'warning',
                     showCancelButton: true,

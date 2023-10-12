@@ -26,6 +26,9 @@
           <caption class="c-table__title">
             Lista de Estados de Proyectos
             <small>{{ statuses|length }} estados</small>
+            <a class="c-table__title-action" href="#!">
+              <i class="fa fa-cloud-download"></i> Crear proyecto
+            </a>
           </caption>
 
           <thead class="c-table__head c-table__head--slim">
@@ -47,7 +50,7 @@
                   <a class="c-btn c-btn--success" href="{% url 'project:status_update' status.id %}">
                     <i class="fa fa-pencil-square-o u-mr-xsmall"></i>Editar
                   </a>
-                  <a class="c-btn c-btn--success" href="#" onclick="showAlert({{ status.id }})">
+                  <a class="c-btn c-btn--success" href="#" onclick="showAlert('{{ status.id }}', '{{ status.name }}')">
                     <i class="fa fa-trash-o u-mr-xsmall"></i>Eliminar
                   </a>
                 </div>

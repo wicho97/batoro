@@ -10,6 +10,8 @@ from django.core.paginator import Paginator
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+from django.contrib.messages.views import SuccessMessageMixin
+from django.http import HttpResponseRedirect
 
 
 from .models import Status, Project
@@ -50,16 +52,12 @@ class StatusListView(ListView):
 
 
 @method_decorator(login_required, name="dispatch")
-class StatusCreateView(CreateView):
+class StatusCreateView(SuccessMessageMixin, CreateView):
     model = Status
     template_name = "projects/status_create.html"
     form_class = StatusForm
     success_message = "Creado con éxito."
-    success_url = reverse_lazy("project:status_create")
-
-    def form_valid(self, form):
-        messages.success(self.request, self.success_message)
-        return super(StatusCreateView, self).form_valid(form)
+    success_url = reverse_lazy("project:status_list")
 
 
 @method_decorator(login_required, name="dispatch")
@@ -80,11 +78,10 @@ class StatusUpdateView(UpdateView):
 @login_required
 def delete_project_status(request, project_status_id):
     status = Status.objects.get(id=project_status_id)
+    status_name = status.name
     status.delete()
-    statuses = Status.objects.all()
-    context = {"statuses": statuses}
-    messages.success(request, "El estado se ha borrado exitosamente.")
-    return render(request, "projects/status_list.html", context)
+    messages.success(request, f"El estado '{status_name}' se ha borrado exitosamente.")
+    return HttpResponseRedirect(reverse_lazy("project:status_list"))
 
 
 @method_decorator(login_required, name="dispatch")
@@ -134,16 +131,12 @@ class ProjectDetailView(DetailView):
 
 
 @method_decorator(login_required, name="dispatch")
-class ProjectCreateView(CreateView):
+class ProjectCreateView(SuccessMessageMixin, CreateView):
     model = Project
     template_name = "projects/project_create.html"
     form_class = ProjectForm
     success_message = "Creado con éxito."
-    success_url = reverse_lazy("project:project_create")
-
-    def form_valid(self, form):
-        messages.success(self.request, self.success_message)
-        return super(ProjectCreateView, self).form_valid(form)
+    success_url = reverse_lazy("project:project_list")
 
 
 @method_decorator(login_required, name="dispatch")
