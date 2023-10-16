@@ -9,6 +9,7 @@ from .views import (
     ProjectCreateView,
     ProjectUpdateView,
     ProjectDetailView,
+    delete_project,
 )
 
 app_name = "project"
@@ -28,4 +29,5 @@ urlpatterns = [
     path("create/", ProjectCreateView.as_view(), name="project_create"),
     path("update/<int:pk>/", ProjectUpdateView.as_view(), name="project_update"),
     path("detail/<int:pk>/", ProjectDetailView.as_view(), name="project_detail"),
+    path("delete/<int:project_id>/", delete_project, name="project_delete"),
 ]

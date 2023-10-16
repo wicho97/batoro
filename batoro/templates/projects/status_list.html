@@ -4,7 +4,7 @@
 
 {% block content %}
 
-<div class="container">
+<div class="container u-mt-medium">
   {% if messages %}
   <div class="row">
     <div class="col-lg-12">
@@ -26,14 +26,12 @@
           <caption class="c-table__title">
             Lista de Estados de Proyectos
             <small>{{ statuses|length }} estados</small>
-            <a class="c-table__title-action" href="#!">
-              <i class="fa fa-cloud-download"></i> Crear proyecto
-            </a>
           </caption>
 
           <thead class="c-table__head c-table__head--slim">
             <tr class="c-table__row">
               <th class="c-table__cell c-table__cell--head">Nombre</th>
+              <th class="c-table__cell c-table__cell--head">Color</th>
               <th class="c-table__cell c-table__cell--head">
                 <span class="u-hidden-visually">Actions</span>
               </th>
@@ -44,6 +42,7 @@
             {% for status in statuses %}
             <tr class="c-table__row">
               <td class="c-table__cell">{{ status.name }}</td>
+              <td class="c-table__cell">{{ status.color }}</td>
 
               <td class="c-table__cell u-text-right">
                 <div class="c-btn-group">

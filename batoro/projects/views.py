@@ -120,14 +120,12 @@ class ProjectDetailView(DetailView):
     template_name = "projects/project_detail.html"
     context_object_name = "project"
 
-    # def get_queryset(self):
-    #     """
-    #     Asegura que solo se devuelvan los objetos que cumplan ciertas condiciones.
-    #     """
-    #     queryset = super().get_queryset()
-    #     # Por ejemplo, filtramos solo los objetos que estén activos
-    #     queryset = queryset.filter(estado="activo")
-    #     return queryset
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        project = self.get_object()
+        profile = project.project_manager.profile
+        context["profile_photo"] = profile.photo
+        return context
 
 
 @method_decorator(login_required, name="dispatch")
@@ -152,3 +150,12 @@ class ProjectUpdateView(UpdateView):
     def form_valid(self, form):
         messages.success(self.request, self.success_message)
         return super(ProjectUpdateView, self).form_valid(form)
+
+
+@login_required
+def delete_project(request, project_id):
+    project = Project.objects.get(id=project_id)
+    project_name = project.name
+    project.delete()
+    messages.success(request, f"El proyecto '{project_name}' se ha borrado exitosamente.")
+    return HttpResponseRedirect(reverse_lazy("project:project_list"))

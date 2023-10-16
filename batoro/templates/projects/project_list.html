@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block content %}
-  <div class="container">
+  <div class="container u-mt-medium">
     {% if messages %}
       <div class="row">
         <div class="col-lg-12">
@@ -21,11 +21,12 @@
     <div class="row u-mb-large">
       <div class="col-md-12">
         <div class="c-table-responsive@wide">
-          <table class="c-table  c-table--highlight u-mb-small">
-            <caption class="c-table__title">Lista Proyectos
+          <table class="c-table c-table--highlight u-mb-small">
+            <caption class="c-table__title">
+              Lista Proyectos
               <small>{{ projects|length }} proyectos</small>
             </caption>
-            
+
             <thead class="c-table__head c-table__head--slim">
               <tr class="c-table__row">
                 <th class="c-table__cell c-table__cell--head">#</th>
@@ -43,39 +44,39 @@
 
             <tbody>
               {% for project in projects %}
-              <tr class="c-table__row">
-                <td class="c-table__cell">
-                  <span class="u-text-mute">{{ project.id }}</span>
-                </td>
-                <td class="c-table__cell">{{ project.name }}</td>
-                <td class="c-table__cell">
-                  <span class="u-text-mute">{{ project.start_date }}</span>
-                </td>
-                <td class="c-table__cell">
-                  <span class="u-text-mute">{{ project.finish_date }}</span>
-                </td>
-                <td class="c-table__cell">
-                  <span class="c-badge c-badge--small c-badge--success">{{ project.status }}</span>
-                </td>
-                <td class="c-table__cell">
-                  <span class="u-text-mute">{{ project.project_manager }}</span>
-                </td>
-                <td class="c-table__cell">
-                  <span class="u-text-mute">{{ project.client }}</span>
-                </td>
+                <tr class="c-table__row">
+                  <td class="c-table__cell">
+                    <span class="u-text-mute">{{ project.id }}</span>
+                  </td>
+                  <td class="c-table__cell">{{ project.name }}</td>
+                  <td class="c-table__cell">
+                    <span class="u-text-mute">{{ project.start_date }}</span>
+                  </td>
+                  <td class="c-table__cell">
+                    <span class="u-text-mute">{{ project.finish_date }}</span>
+                  </td>
+                  <td class="c-table__cell">
+                    <span class="c-badge c-badge--small" style="background-color: {{ project.status.color }};">{{ project.status }}</span>
+                  </td>
+                  <td class="c-table__cell">
+                    <span class="u-text-mute">{{ project.project_manager }}</span>
+                  </td>
+                  <td class="c-table__cell">
+                    <span class="u-text-mute">{{ project.project_manager }}</span>
+                  </td>
 
-                <td class="c-table__cell u-text-right">
-                  <a href="{% url 'project:project_detail' project.id %}" class="c-btn c-btn--info u-mr-xsmall">Detalle</a>
-                  <div class="c-dropdown dropdown">
-                    <button class="c-btn c-btn--secondary has-dropdown dropdown-toggle" id="dropdownMenuButton10" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Acciones</button>
+                  <td class="c-table__cell u-text-right">
+                    <a href="{% url 'project:project_detail' project.id %}" class="c-btn c-btn--info u-mr-xsmall">Detalle</a>
+                    <div class="c-dropdown dropdown">
+                      <button class="c-btn c-btn--secondary has-dropdown dropdown-toggle" id="dropdownMenuButton10" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Acciones</button>
 
-                    <div class="c-dropdown__menu dropdown-menu" aria-labelledby="dropdownMenuButton10">
-                      <a class="c-dropdown__item dropdown-item" href="{% url 'project:project_update' project.id %}">Editar</a>
-                      <a class="c-dropdown__item dropdown-item" href="#">Eliminar</a>
+                      <div class="c-dropdown__menu dropdown-menu" aria-labelledby="dropdownMenuButton10">
+                        <a class="c-dropdown__item dropdown-item" href="{% url 'project:project_update' project.id %}">Editar</a>
+                        <a class="c-dropdown__item dropdown-item" href="#" onclick="showAlertProject('{{ project.id }}', '{{ project.name }}')">Eliminar</a>
+                      </div>
                     </div>
-                  </div>
-                </td>
-              </tr>
+                  </td>
+                </tr>
               {% endfor %}
               <!-- // .table__row -->
             </tbody>

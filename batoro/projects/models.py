@@ -15,6 +15,7 @@ class TimestampMixin(models.Model):
 
 class Status(TimestampMixin, models.Model):
     name = models.CharField(max_length=100)
+    color = models.CharField(max_length=7, default="#000000")
 
     class Meta:
         verbose_name = "Status"
@@ -26,10 +27,10 @@ class Status(TimestampMixin, models.Model):
 
 class Project(TimestampMixin, models.Model):
     name = models.CharField(max_length=100)
-    description = models.TextField()
+    description = models.TextField(blank=True, null=True)
     public = models.BooleanField()
-    start_date = models.DateField()
-    finish_date = models.DateField()
+    start_date = models.DateField(blank=True, null=True)
+    finish_date = models.DateField(blank=True, null=True)
     status = models.ForeignKey(Status, on_delete=models.SET_NULL, null=True)
     project_manager = models.ForeignKey(
         User, on_delete=models.SET_NULL, null=True, related_name="project_manager"

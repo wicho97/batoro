@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block content %}
-  <div class="container">
+  <div class="container u-mt-medium">
     <div class="row">
       <div class="col-lg-12 u-mb-small">
         <h1>Crear Proyecto</h1>
@@ -17,17 +17,6 @@
           <form method="post">
             {% csrf_token %}
             <div class="row">
-              <div class="col-lg-12">
-                <div class="c-field u-mb-small">
-                  <label class="c-field__label">Público</label>
-                  {{ form.public }}
-                  {% for error in form.public.errors %}
-                    <small class="c-field__message u-color-danger">
-                      <i class="fa fa-times-circle"></i>{{ error }}
-                    </small>
-                  {% endfor %}
-                </div>
-              </div>
               <div class="col-lg-12">
                 <div class="c-field u-mb-small">
                   <label class="c-field__label">Nombre</label>
@@ -112,9 +101,19 @@
                 </div>
               </div>
               <div class="col-lg-12">
+                <div class="c-field u-mb-small">
+                  <label class="c-field__label">Público</label>
+                  {{ form.public }}
+                  {% for error in form.public.errors %}
+                    <small class="c-field__message u-color-danger">
+                      <i class="fa fa-times-circle"></i>{{ error }}
+                    </small>
+                  {% endfor %}
+                </div>
+              </div>
+              <div class="col-lg-12">
                 <button class="c-btn c-btn--info" type="submit">Agregar</button>
               </div>
-
               {% if messages %}
                 <div class="col-lg-12 u-mt-small">
                   {% for message in messages %}
