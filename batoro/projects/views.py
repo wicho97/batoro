@@ -124,7 +124,8 @@ class ProjectDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         project = self.get_object()
         profile = project.project_manager.profile
-        context["profile_photo"] = profile.photo
+        if profile:
+            context["profile_photo"] = profile.photo
         return context
 
 

@@ -36,7 +36,11 @@ class Project(TimestampMixin, models.Model):
         User, on_delete=models.SET_NULL, null=True, related_name="project_manager"
     )
     client = models.ForeignKey(
-        User, on_delete=models.SET_NULL, null=True, related_name="project_client"
+        User,
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+        related_name="project_client",
     )
 
     def __str__(self):

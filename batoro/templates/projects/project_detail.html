@@ -1,10 +1,6 @@
-{% extends 'base_2.html' %}
-
-{% block title %}
+{% extends 'base_2.html' %} {% block title %}
   Proyecto - Detalle del Proyecto
-{% endblock %}
-
-{% block content %}
+{% endblock %} {% block content %}
   <div class="c-toolbar u-mb-medium">
     <a class="c-btn c-btn--info u-mr-auto" href="{% url 'project:project_list' %}">Volver al listado</a>
     <a class="c-btn c-btn--info u-ml-small" href="{% url 'project:project_update' project.id %}"><i class="fa fa-pencil-square-o u-mr-xsmall"></i>Editar Proyecto</a>
@@ -27,14 +23,20 @@
               <span class="c-badge c-badge--small" style="background-color: {{ project.status.color }};">{{ project.status }}</span>
             </p>
 
-            <p class="u-text-mute u-text-uppercase u-text-small u-mb-xsmall">Descripción</p>
-            <p class="u-mb-medium">{{ project.description }}</p>
+            {% if project.description %}
+              <p class="u-text-mute u-text-uppercase u-text-small u-mb-xsmall">Descripción</p>
+              <p class="u-mb-medium">{{ project.description }}</p>
+            {% endif %}
 
-            <p class="u-text-mute u-text-uppercase u-text-small u-mb-xsmall">Fecha de inicio</p>
-            <p class="u-mb-medium">{{ project.start_date }}</p>
+            {% if project.start_date %}
+              <p class="u-text-mute u-text-uppercase u-text-small u-mb-xsmall">Fecha de inicio</p>
+              <p class="u-mb-medium">{{ project.start_date }}</p>
+            {% endif %}
 
-            <p class="u-text-mute u-text-uppercase u-text-small u-mb-xsmall">Fecha de finalización</p>
-            <p class="u-mb-medium">{{ project.finish_date }}</p>
+            {% if project.finish_date %}
+              <p class="u-text-mute u-text-uppercase u-text-small u-mb-xsmall">Fecha de finalización</p>
+              <p class="u-mb-medium">{{ project.finish_date }}</p>
+            {% endif %}
           </div>
           <!-- // .c-stage__panel -->
         </article>
@@ -46,11 +48,13 @@
           <div class="u-p-medium">
             <h5 class="u-h6 u-mb-medium">Jefe de proyecto</h5>
             <div class="o-media u-mb-small">
+              {% if profile_photo %}
               <div class="o-media__img u-mr-xsmall">
                 <div class="c-avatar c-avatar--xsmall">
                   <img class="c-avatar__img" src="{{ profile_photo.url }}" alt="Profile Title" />
                 </div>
               </div>
+              {% endif %}
               <div class="o-media__body">
                 <h6 class="u-text-small u-mb-zero">{{ project.project_manager }}</h6>
               </div>
@@ -58,6 +62,7 @@
           </div>
         </div>
 
+        {% if project.client %}
         <div class="c-card u-mb-medium">
           <div class="u-p-medium">
             <h5 class="u-h6 u-mb-medium">Cliente</h5>
@@ -73,6 +78,7 @@
             </div>
           </div>
         </div>
+        {% endif %}
       </div>
     </div>
   </div>
