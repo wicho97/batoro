@@ -1,97 +1,76 @@
-{% extends "base_2.html" %}
+{% extends 'base_2.html' %}
 
-{% block title %} Proyecto - Lista Status {% endblock %}
+{% block title %}
+  Proyecto - Lista Estados
+{% endblock %}
 
 {% block content %}
-
-<div class="container u-mt-medium">
-  {% if messages %}
-  <div class="row">
-    <div class="col-lg-12">
-      {% for message in messages %}
-      <div
-        class="c-alert {% if message.tags %} {{ message.tags }} {% endif %} alert fade show"
-      >
-        <i class="c-alert__icon fa fa-check-circle"></i> {{ message }}
-        <button class="c-close" data-dismiss="alert" type="button">×</button>
+  <div class="c-toolbar u-mb-medium">
+    <form class="d-flex u-ml-auto" role="search">
+      <div class="c-field c-field--inline has-icon-right u-hidden-down@tablet u-mr-small">
+        <input class="c-input" id="search-projects" type="text" placeholder="Buscar por nombre" name="search" />
+        <span class="c-field__icon"><i class="fa fa-search"></i></span>
       </div>
-      {% endfor %}
+      <button class="c-btn c-btn--info" type="submit">Buscar</button>
+    </form>
+  </div>
+  <div class="container u-mt-medium">
+    {% if messages %}
+      <div class="row">
+        <div class="col-lg-12">
+          {% for message in messages %}
+            <div class="c-alert {% if message.tags %}{{ message.tags }}{% endif %} alert fade show">
+              <i class="c-alert__icon fa fa-check-circle"></i> {{ message }}
+              <button class="c-close" data-dismiss="alert" type="button">×</button>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    {% endif %}
+    <div class="row u-mb-large">
+      <div class="col-sm-12">
+        {% if request.GET.search %}
+          <h3 class="u-mb-small">Busqueda: {{ request.GET.search }}</h3>
+        {% endif %}
+        <div class="c-table-responsive@desktop">
+          <table class="c-table c-table--highlight u-mb-small">
+            <caption class="c-table__title">
+              Lista de Estados de Proyectos{% if request.GET.search %}
+                <small>{{ total_search_statuses }} estados</small>
+              {% else %}
+                <small>{{ total_statuses }} estados</small>
+              {% endif %}
+            </caption>
+
+            <thead class="c-table__head c-table__head--slim">
+              <tr class="c-table__row">
+                <th class="c-table__cell c-table__cell--head">Nombre</th>
+                <th class="c-table__cell c-table__cell--head">Color</th>
+                <th class="c-table__cell c-table__cell--head">
+                  <span class="u-hidden-visually">Actions</span>
+                </th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {% for status in statuses %}
+                <tr class="c-table__row">
+                  <td class="c-table__cell">{{ status.name }}</td>
+                  <td class="c-table__cell">{{ status.color }}</td>
+
+                  <td class="c-table__cell u-text-right">
+                    <div class="c-btn-group">
+                      <a class="c-btn c-btn--success" href="{% url 'project:status_update' status.id %}"><i class="fa fa-pencil-square-o u-mr-xsmall"></i>Editar</a>
+                      <a class="c-btn c-btn--success" href="#" onclick="showAlert('{{ status.id }}', '{{ status.name }}')"><i class="fa fa-trash-o u-mr-xsmall"></i>Eliminar</a>
+                    </div>
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        {% include 'pagination.html' %}
+      </div>
     </div>
   </div>
-  {% endif %}
-  <div class="row u-mb-large">
-    <div class="col-sm-12">
-      <div class="c-table-responsive@desktop">
-        <table class="c-table c-table--highlight u-mb-small">
-          <caption class="c-table__title">
-            Lista de Estados de Proyectos
-            <small>{{ statuses|length }} estados</small>
-          </caption>
-
-          <thead class="c-table__head c-table__head--slim">
-            <tr class="c-table__row">
-              <th class="c-table__cell c-table__cell--head">Nombre</th>
-              <th class="c-table__cell c-table__cell--head">Color</th>
-              <th class="c-table__cell c-table__cell--head">
-                <span class="u-hidden-visually">Actions</span>
-              </th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {% for status in statuses %}
-            <tr class="c-table__row">
-              <td class="c-table__cell">{{ status.name }}</td>
-              <td class="c-table__cell">{{ status.color }}</td>
-
-              <td class="c-table__cell u-text-right">
-                <div class="c-btn-group">
-                  <a class="c-btn c-btn--success" href="{% url 'project:status_update' status.id %}">
-                    <i class="fa fa-pencil-square-o u-mr-xsmall"></i>Editar
-                  </a>
-                  <a class="c-btn c-btn--success" href="#" onclick="showAlert('{{ status.id }}', '{{ status.name }}')">
-                    <i class="fa fa-trash-o u-mr-xsmall"></i>Eliminar
-                  </a>
-                </div>
-              </td>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      </div>
-
-      {% if is_paginated %}
-      <nav class="c-pagination u-justify-center">
-        <ul class="c-pagination__list">
-          {% if previous_index %}
-          <li class="c-pagination__item">
-            <a class="c-pagination__control" href="?page={{ previous_index }}">
-              <i class="fa fa-caret-left"></i>
-            </a>
-          </li>
-          {% endif %} {% for i in page_obj.paginator.page_range %}
-          <li class="c-pagination__item">
-            {% if page_obj.number == i %}
-            <a class="c-pagination__link is-active">{{ i }}</a>
-            <span class="current-page">{{ i }}</span>
-            {% else %}
-            <a class="c-pagination__link" href="?page={{ i }}">{{ i }}</a>
-            {% endif %}
-          </li>
-          {% endfor %} {% if next_index %}
-          <li class="c-pagination__item">
-            <a class="c-pagination__control" href="?page={{ next_index }}">
-              <i class="fa fa-caret-right"></i>
-            </a>
-          </li>
-          {% endif %}
-        </ul>
-      </nav>
-      {% endif %}
-    </div>
-  </div>
-  <!-- // .row -->
-</div>
-<!-- // .container -->
-
 {% endblock %}
