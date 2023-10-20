@@ -26,7 +26,7 @@ class StatusListView(ListView):
     model = Status
     template_name = "projects/status_list.html"
     context_object_name = "statuses"
-    paginate_by = 1
+    paginate_by = 10
 
     def get_queryset(self):
         queryset = super().get_queryset()
@@ -96,7 +96,8 @@ def delete_project_status(request, project_status_id):
     status = Status.objects.get(id=project_status_id)
     status_name = status.name
     status.delete()
-    messages.success(request, f"El estado '{status_name}' se ha borrado exitosamente.")
+    messages.success(
+        request, f"El estado '{status_name}' se ha borrado exitosamente.")
     return HttpResponseRedirect(reverse_lazy("project:status_list"))
 
 
@@ -109,12 +110,20 @@ class ProjectListView(ListView):
 
     def get_queryset(self):
         queryset = super().get_queryset()
-        return queryset.order_by("id")
+        # Filter by name
+        search = self.request.GET.get("search", "")
+
+        if search:
+            queryset = queryset.filter(name__icontains=search)
+        return queryset
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        paginator = Paginator(self.object_list, self.paginate_by)
+        # pagination
+        queryset = self.get_queryset()
+        context["total_projects"] = self.model.objects.count()
+        paginator = Paginator(queryset, self.paginate_by)
         page_number = self.request.GET.get("page")
         page_obj = paginator.get_page(page_number)
 
@@ -126,6 +135,14 @@ class ProjectListView(ListView):
         next_index = page_obj.next_page_number() - 1 if page_obj.has_next() else 0
         context["previous_index"] = previous_index
         context["next_index"] = next_index
+
+        # Add search parameter to URL
+        search = self.request.GET.get("search", "")
+        if search:
+            context["total_search_projects"] = self.model.objects.filter(
+                name__icontains=search
+            ).count()
+            context["search"] = search
 
         return context
 

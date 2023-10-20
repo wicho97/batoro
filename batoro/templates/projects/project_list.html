@@ -5,7 +5,17 @@
 {% endblock %}
 
 {% block content %}
-  <div class="container u-mt-medium">
+  <div class="c-toolbar u-mb-medium">
+    <a class="c-btn c-btn--info" href="{% url 'project:project_create' %}">Crear proyecto</a>
+    <form class="d-flex u-ml-auto" role="search">
+      <div class="c-field c-field--inline has-icon-right u-hidden-down@tablet u-mr-small">
+        <input class="c-input" id="search-projects" type="text" placeholder="Buscar por nombre" name="search" />
+        <span class="c-field__icon"><i class="fa fa-search"></i></span>
+      </div>
+      <button class="c-btn c-btn--info" type="submit">Buscar</button>
+    </form>
+  </div>
+  <div class="container-fluid u-mt-medium">
     {% if messages %}
       <div class="row">
         <div class="col-lg-12">
@@ -20,11 +30,17 @@
     {% endif %}
     <div class="row u-mb-large">
       <div class="col-md-12">
+        {% if request.GET.search %}
+          <h3 class="u-mb-small">Busqueda: {{ request.GET.search }}</h3>
+        {% endif %}
         <div class="c-table-responsive@wide">
           <table class="c-table c-table--highlight u-mb-small">
             <caption class="c-table__title">
-              Lista Proyectos
-              <small>{{ projects|length }} proyectos</small>
+              Lista de Proyectos{% if request.GET.search %}
+                <small>{{ total_search_projects }} proyectos</small>
+              {% else %}
+                <small>{{ total_projects }} estados</small>
+              {% endif %}
             </caption>
 
             <thead class="c-table__head c-table__head--slim">
@@ -50,10 +66,14 @@
                   </td>
                   <td class="c-table__cell">{{ project.name }}</td>
                   <td class="c-table__cell">
-                    <span class="u-text-mute">{{ project.start_date }}</span>
+                    {% if project.start_date %}
+                      <span class="u-text-mute">{{ project.start_date }}</span>
+                    {% endif %}
                   </td>
                   <td class="c-table__cell">
-                    <span class="u-text-mute">{{ project.finish_date }}</span>
+                    {% if project.finish_date %}
+                      <span class="u-text-mute">{{ project.finish_date }}</span>
+                    {% endif %}
                   </td>
                   <td class="c-table__cell">
                     <span class="c-badge c-badge--small" style="background-color: {{ project.status.color }};">{{ project.status }}</span>
@@ -62,7 +82,9 @@
                     <span class="u-text-mute">{{ project.project_manager }}</span>
                   </td>
                   <td class="c-table__cell">
-                    <span class="u-text-mute">{{ project.project_manager }}</span>
+                    {% if project.client %}
+                      <span class="u-text-mute">{{ project.client }}</span>
+                    {% endif %}
                   </td>
 
                   <td class="c-table__cell u-text-right">
@@ -78,38 +100,11 @@
                   </td>
                 </tr>
               {% endfor %}
-              <!-- // .table__row -->
             </tbody>
           </table>
         </div>
-
-        {% if is_paginated %}
-          <nav class="c-pagination u-justify-center">
-            <ul class="c-pagination__list">
-              {% if previous_index %}
-                <li class="c-pagination__item">
-                  <a class="c-pagination__control" href="?page={{ previous_index }}"><i class="fa fa-caret-left"></i></a>
-                </li>
-              {% endif %} {% for i in page_obj.paginator.page_range %}
-                <li class="c-pagination__item">
-                  {% if page_obj.number == i %}
-                    <a class="c-pagination__link is-active">{{ i }}</a>
-                    <span class="current-page">{{ i }}</span>
-                  {% else %}
-                    <a class="c-pagination__link" href="?page={{ i }}">{{ i }}</a>
-                  {% endif %}
-                </li>
-              {% endfor %} {% if next_index %}
-                <li class="c-pagination__item">
-                  <a class="c-pagination__control" href="?page={{ next_index }}"><i class="fa fa-caret-right"></i></a>
-                </li>
-              {% endif %}
-            </ul>
-          </nav>
-        {% endif %}
+        {% include 'pagination.html' %}
       </div>
     </div>
-    <!-- // .row -->
   </div>
-  <!-- // .container -->
 {% endblock %}

@@ -1,56 +1,57 @@
-{% extends "base_2.html" %}
+{% extends 'base_2.html' %}
 
-{% block title %} Proyecto - Crear Status {%endblock %}
+{% block title %}
+  Proyecto - Crear Status
+{% endblock %}
 
 {% block content %}
-
-<div class="container u-mt-medium">
-  <div class="row">
-    <div class="col-lg-12 u-mb-small">
-      <h1>Crear Estado de Proyecto</h1>
-    </div>
+  <div class="c-toolbar u-mb-medium">
+    <a class="c-btn c-btn--info" href="{% url 'project:status_list' %}">Volver al listado</a>
   </div>
-  <div class="row">
-    <div class="col-lg-12 u-ml-auto u-mb-medium">
-      <div class="c-card u-p-medium u-mb-medium" data-mh="invoices-cards">
-        <form method="post">
-          {% csrf_token %}
-          <div class="row">
-            <div class="col-lg-6">
-              <div class="c-field u-mb-small">
-                <label class="c-field__label">Nombre</label>
-                {{ form.name }}
-              </div>
-            </div>
-            <div class="col-lg-6">
-              <div class="c-field u-mb-small">
-                <label class="c-field__label">Color</label>
-                {{ form.color }}
-              </div>
-            </div>
-            <div class="col-lg-12">
-              <button class="c-btn c-btn--info" type="submit">Agregar</button>
-            </div>
-
-            {% if messages %}
-              <div class="col-lg-12 u-mt-small">
-                {% for message in messages %}
-                <div
-                  class="c-alert {% if message.tags %} {{ message.tags }} {% endif %} alert fade show"
-                >
-                  <i class="c-alert__icon fa fa-check-circle"></i> {{ message }}
-                  <button class="c-close" data-dismiss="alert" type="button">×</button>
-                </div>
-                {% endfor %}
-            </div>
-            {% endif %}
-          </div>
-        </form>
+  <div class="container u-mt-medium">
+    <div class="row">
+      <div class="col-lg-12 u-mb-small">
+        <h1>Crear Estado de Proyecto</h1>
       </div>
-      <!-- // .c-card -->
+    </div>
+    <div class="row">
+      <div class="col-lg-12 u-ml-auto u-mb-medium">
+        <div class="c-card u-p-medium u-mb-medium" data-mh="invoices-cards">
+          <form method="post">
+            {% csrf_token %}
+            <div class="row">
+              <div class="col-lg-6">
+                <div class="c-field u-mb-small">
+                  <label class="c-field__label">Nombre</label>
+                  {{ form.name }}
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="c-field u-mb-small">
+                  <label class="c-field__label">Color</label>
+                  {{ form.color }}
+                </div>
+              </div>
+              <div class="col-lg-12">
+                <button class="c-btn c-btn--info" type="submit">Agregar</button>
+              </div>
+
+              {% if messages %}
+                <div class="col-lg-12 u-mt-small">
+                  {% for message in messages %}
+                    <div class="c-alert {% if message.tags %}{{ message.tags }}{% endif %} alert fade show">
+                      <i class="c-alert__icon fa fa-check-circle"></i> {{ message }}
+                      <button class="c-close" data-dismiss="alert" type="button">×</button>
+                    </div>
+                  {% endfor %}
+                </div>
+              {% endif %}
+            </div>
+          </form>
+        </div>
+        <!-- // .c-card -->
+      </div>
     </div>
   </div>
-</div>
-<!-- // .container -->
-
+  <!-- // .container -->
 {% endblock %}
