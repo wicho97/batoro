@@ -6,10 +6,18 @@
 
 {% block content %}
   <div class="c-toolbar u-mb-medium">
-    <a class="c-btn c-btn--info" href="{% url 'project:project_create' %}">Crear proyecto</a>
-    <form class="d-flex u-ml-auto" role="search">
+    <a class="c-btn c-btn--info u-mr-auto" href="{% url 'project:project_create' %}">Crear proyecto</a>
+    <form class="d-flex" method="get">
+      <div class="c-field c-field--inline u-mr-small">
+        <select class="c-select has-search" id="select2" name="status">
+          <option value="">Elegir estado</option>
+          {% for status in statuses %}
+            <option value="{{ status.name }}" {% if request.GET.status == status.name %}selected{% endif %}>{{ status.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
       <div class="c-field c-field--inline has-icon-right u-hidden-down@tablet u-mr-small">
-        <input class="c-input" id="search-projects" type="text" placeholder="Buscar por nombre" name="search" />
+        <input class="c-input" type="text" placeholder="Buscar por nombre" name="search" value="{{ request.GET.search }}" />
         <span class="c-field__icon"><i class="fa fa-search"></i></span>
       </div>
       <button class="c-btn c-btn--info" type="submit">Buscar</button>
@@ -103,7 +111,7 @@
             </tbody>
           </table>
         </div>
-        {% include 'pagination.html' %}
+        {% include 'projects/pagination_project.html' %}
       </div>
     </div>
   </div>

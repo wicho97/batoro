@@ -1,0 +1,24 @@
+{% if is_paginated %}
+  <nav class="c-pagination u-justify-center">
+    <ul class="c-pagination__list">
+      {% if previous_index %}
+        <li class="c-pagination__item">
+          <a class="c-pagination__control" href="?page={{ previous_index }}&search={{ request.GET.search }}&status={{ request.GET.status }}"><i class="fa fa-caret-left"></i></a>
+        </li>
+      {% endif %} {% for i in page_obj.paginator.page_range %}
+        <li class="c-pagination__item">
+          {% if page_obj.number == i %}
+            <a class="c-pagination__link is-active">{{ i }}</a>
+            <span class="current-page">{{ i }}</span>
+          {% else %}
+            <a class="c-pagination__link" href="?page={{ i }}&search={{ request.GET.search }}&status={{ request.GET.status }}">{{ i }}</a>
+          {% endif %}
+        </li>
+      {% endfor %} {% if next_index %}
+        <li class="c-pagination__item">
+          <a class="c-pagination__control" href="?page={{ next_index }}&search={{ request.GET.search }}&status={{ request.GET.status }}"><i class="fa fa-caret-right"></i></a>
+        </li>
+      {% endif %}
+    </ul>
+  </nav>
+{% endif %}
