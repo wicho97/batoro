@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from django.views.generic import (
     ListView,
     DetailView,
@@ -99,8 +98,7 @@ def delete_project_status(request, project_status_id):
     status = Status.objects.get(id=project_status_id)
     status_name = status.name
     status.delete()
-    messages.success(
-        request, f"El estado '{status_name}' se ha borrado exitosamente.")
+    messages.success(request, f"El estado '{status_name}' se ha borrado exitosamente.")
     return HttpResponseRedirect(reverse_lazy("project:status_list"))
 
 
@@ -119,8 +117,7 @@ class ProjectListView(ListView):
         status = self.request.GET.get("status", "")
 
         if search and status:
-            queryset = queryset.filter(
-                name__icontains=search, status__name=status)
+            queryset = queryset.filter(name__icontains=search, status__name=status)
         elif status:
             queryset = queryset.filter(status__name=status)
         elif search and status:

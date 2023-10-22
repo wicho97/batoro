@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     # Local apps
     'account.apps.AccountConfig',
     'projects.apps.ProjectsConfig',
+    'tasks.apps.TasksConfig',
 
     # Django apps
     'django.contrib.admin',
