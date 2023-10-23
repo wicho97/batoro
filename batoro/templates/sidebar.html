@@ -14,7 +14,7 @@
     {% comment %} Tasks {% endcomment %}
     <h4 class="c-sidebar__title">Tareas</h4>
     <ul class="c-sidebar__list">
-      {% comment %} <li class="c-sidebar__item has-submenu">
+      <li class="c-sidebar__item has-submenu">
         <a class="c-sidebar__link" data-toggle="collapse" href="#task-submenu" aria-expanded="false" aria-controls="task-submenu"><i class="fa fa-table u-mr-xsmall"></i>Tareas</a>
         <ul class="c-sidebar__submenu collapse" id="task-submenu">
           <li>
@@ -24,7 +24,7 @@
             <a class="c-sidebar__link" href="{% url 'task:task_create' %}">Crear Tarea</a>
           </li>
         </ul>
-      </li> {% endcomment %}
+      </li>
       <li class="c-sidebar__item has-submenu">
         <a class="c-sidebar__link" data-toggle="collapse" href="#taks-status-submenu" aria-expanded="false" aria-controls="taks-status-submenu"><i class="fa fa-table u-mr-xsmall"></i>Estados</a>
         <ul class="c-sidebar__submenu collapse" id="taks-status-submenu">

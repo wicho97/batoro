@@ -263,16 +263,55 @@ def delete_task_type(request, task_type_id):
     return HttpResponseRedirect(reverse_lazy("task:type_list"))
 
 
-# class TaskListView(ListView):
-#     model = Task
-#     template_name = "tasks/task_list.html"
-#     context_object_name = "objetos"
+class TaskListView(ListView):
+    model = Task
+    template_name = "tasks/task_list.html"
+    context_object_name = "tasks"
+    paginate_by = 10
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        # Get the total number of tasks
+        context["total_tasks"] = self.model.objects.count()
+
+        # Get the total number of tasks by filter
+        search = self.request.GET.get("search", "")
+        context["total_search_tasks"] = self.model.objects.filter(
+            subject__icontains=search
+        ).count()
+
+        # Get all statuses
+        context["statuses"] = Status.objects.all()
+
+        # Get all priorities
+        context["priorities"] = Priority.objects.all()
+
+        # Get all types
+        context["types"] = Type.objects.all()
+
+        # pagination
+        queryset = self.get_queryset()
+        paginator = Paginator(queryset, self.paginate_by)
+        page_number = self.request.GET.get("page")
+        page_obj = paginator.get_page(page_number)
+
+        context["page_obj"] = page_obj
+        context["is_paginated"] = page_obj.has_other_pages()
+        previous_index = (
+            page_obj.previous_page_number() - 1 if page_obj.has_previous() else 0
+        )
+        next_index = page_obj.next_page_number() - 1 if page_obj.has_next() else 0
+        context["previous_index"] = previous_index
+        context["next_index"] = next_index
+
+        return context
 
 
-# class TaskCreateView(CreateView):
-#     model = Task
-#     template_name = "tasks/task_form.html"
-#     fields = "__all__"
+class TaskCreateView(CreateView):
+    model = Task
+    template_name = "tasks/task_create.html"
+    fields = "__all__"
 
 
 # class TaskUpdateView(UpdateView):
