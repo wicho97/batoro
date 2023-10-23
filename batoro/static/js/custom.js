@@ -16,6 +16,8 @@ $("#id_project_manager").select2();
 $("#id_client").select2();
 $("#id_public").removeClass('c-input');
 
+// Projects
+
 function showAlert(status_id, status_name) {
     Swal.fire({
         title: `Estas seguro de eliminar el estado <u>${status_name}</u>?`,
@@ -35,7 +37,6 @@ function showAlert(status_id, status_name) {
 
 
 function showAlertProject(project_id, project_name) {
-    console.log(project_id, project_name)
     Swal.fire({
         title: `Estas seguro de eliminar el estado <u>${project_name}</u>?`,
         text: "¡No podrás revertir esto!",
@@ -48,6 +49,26 @@ function showAlertProject(project_id, project_name) {
     }).then((result) => {
         if (result.isConfirmed) {
             window.location.href = '/projects/delete/' + project_id + '/'
+        }
+    })
+}
+
+
+// Tasks
+
+function showAlertTaskStatus(status_id, status_name) {
+    Swal.fire({
+        title: `Estas seguro de eliminar el estado <u>${status_name}</u>?`,
+        text: "¡No podrás revertir esto!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: '¡Sí, bórralo!',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href = '/tasks/status/delete/' + status_id + '/'
         }
     })
 }
