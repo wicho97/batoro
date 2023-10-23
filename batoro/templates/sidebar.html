@@ -14,7 +14,7 @@
     {% comment %} Tasks {% endcomment %}
     <h4 class="c-sidebar__title">Tareas</h4>
     <ul class="c-sidebar__list">
-      <li class="c-sidebar__item has-submenu">
+      {% comment %} <li class="c-sidebar__item has-submenu">
         <a class="c-sidebar__link" data-toggle="collapse" href="#task-submenu" aria-expanded="false" aria-controls="task-submenu"><i class="fa fa-table u-mr-xsmall"></i>Tareas</a>
         <ul class="c-sidebar__submenu collapse" id="task-submenu">
           <li>
@@ -24,7 +24,7 @@
             <a class="c-sidebar__link" href="{% url 'task:task_create' %}">Crear Tarea</a>
           </li>
         </ul>
-      </li>
+      </li> {% endcomment %}
       <li class="c-sidebar__item has-submenu">
         <a class="c-sidebar__link" data-toggle="collapse" href="#taks-status-submenu" aria-expanded="false" aria-controls="taks-status-submenu"><i class="fa fa-table u-mr-xsmall"></i>Estados</a>
         <ul class="c-sidebar__submenu collapse" id="taks-status-submenu">
@@ -51,10 +51,10 @@
         <a class="c-sidebar__link" data-toggle="collapse" href="#taks-type-submenu" aria-expanded="false" aria-controls="taks-type-submenu"><i class="fa fa-table u-mr-xsmall"></i>Tipos</a>
         <ul class="c-sidebar__submenu collapse" id="taks-type-submenu">
           <li>
-            <a class="c-sidebar__link" href="{% url 'task:status_list' %}">Ver Tipos</a>
+            <a class="c-sidebar__link" href="{% url 'task:type_list' %}">Ver Tipos</a>
           </li>
           <li>
-            <a class="c-sidebar__link" href="{% url 'task:status_create' %}">Crear Tipo</a>
+            <a class="c-sidebar__link" href="{% url 'task:type_create' %}">Crear Tipo</a>
           </li>
         </ul>
       </li>

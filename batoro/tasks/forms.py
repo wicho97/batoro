@@ -1,6 +1,6 @@
 from django.forms import ModelForm
 
-from .models import Status, Priority
+from .models import Status, Priority, Type
 
 
 class StatusForm(ModelForm):
@@ -22,6 +22,18 @@ class PriorityForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(PriorityForm, self).__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs["class"] = "c-input"
+            visible.field.widget.attrs["autocomplete"] = "off"
+
+
+class TypeForm(ModelForm):
+    class Meta:
+        model = Type
+        fields = "__all__"
+
+    def __init__(self, *args, **kwargs):
+        super(TypeForm, self).__init__(*args, **kwargs)
         for visible in self.visible_fields():
             visible.field.widget.attrs["class"] = "c-input"
             visible.field.widget.attrs["autocomplete"] = "off"
