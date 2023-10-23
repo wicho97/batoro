@@ -72,3 +72,20 @@ function showAlertTaskStatus(status_id, status_name) {
         }
     })
 }
+
+function showAlertTaskPriority(status_id, status_name) {
+    Swal.fire({
+        title: `Estas seguro de eliminar la prioridad <u>${status_name}</u>?`,
+        text: "¡No podrás revertir esto!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: '¡Sí, bórralo!',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href = '/tasks/priority/delete/' + status_id + '/'
+        }
+    })
+}

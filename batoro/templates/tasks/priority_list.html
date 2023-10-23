@@ -1,12 +1,12 @@
 {% extends 'base_2.html' %}
 
 {% block title %}
-  Proyecto - Lista de Estados
+  Tarea - Lista de Prioridades
 {% endblock %}
 
 {% block content %}
   <div class="c-toolbar u-mb-medium">
-    <a class="c-btn c-btn--info" href="{% url 'project:status_create' %}">Crear estado</a>
+    <a class="c-btn c-btn--info" href="{% url 'task:priority_create' %}">Crear prioridad</a>
     <form class="d-flex u-ml-auto" role="search">
       <div class="c-field c-field--inline has-icon-right u-hidden-down@tablet u-mr-small">
         <input class="c-input" id="search-projects" type="text" placeholder="Buscar por nombre" name="search" value="{{ request.GET.search }}" />
@@ -36,10 +36,10 @@
         <div class="c-table-responsive@desktop">
           <table class="c-table c-table--highlight u-mb-small">
             <caption class="c-table__title">
-              Lista de Estados de Proyectos{% if request.GET.search %}
-                <small>{{ total_search_statuses }} estados</small>
+              Lista de Prioridades de Tareas{% if request.GET.search %}
+                <small>{{ total_search_statuses }} prioridades</small>
               {% else %}
-                <small>{{ total_statuses }} estados</small>
+                <small>{{ total_statuses }} prioridades</small>
               {% endif %}
             </caption>
 
@@ -61,8 +61,8 @@
 
                   <td class="c-table__cell u-text-right">
                     <div class="c-btn-group">
-                      <a class="c-btn c-btn--success" href="{% url 'project:status_update' status.id %}"><i class="fa fa-pencil-square-o u-mr-xsmall"></i>Editar</a>
-                      <a class="c-btn c-btn--success" href="#" onclick="showAlert('{{ status.id }}', '{{ status.name }}')"><i class="fa fa-trash-o u-mr-xsmall"></i>Eliminar</a>
+                      <a class="c-btn c-btn--success" href="{% url 'task:priority_update' status.id %}"><i class="fa fa-pencil-square-o u-mr-xsmall"></i>Editar</a>
+                      <a class="c-btn c-btn--success" href="#" onclick="showAlertTaskPriority('{{ status.id }}', '{{ status.name }}')"><i class="fa fa-trash-o u-mr-xsmall"></i>Eliminar</a>
                     </div>
                   </td>
                 </tr>
