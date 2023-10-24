@@ -120,25 +120,13 @@ class ProjectListView(ListView):
             queryset = queryset.filter(name__icontains=search, status__name=status)
         elif status:
             queryset = queryset.filter(status__name=status)
-        elif search and status:
+        elif search:
             queryset = queryset.filter(name__icontains=search)
 
         return queryset
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-
-        # Get the total number of projects
-        context["total_projects"] = self.model.objects.count()
-
-        # Get the total number of projects by filter
-        search = self.request.GET.get("search", "")
-        context["total_search_projects"] = self.model.objects.filter(
-            name__icontains=search
-        ).count()
-
-        # Get all statuses
-        context["statuses"] = Status.objects.all()
 
         # pagination
         queryset = self.get_queryset()
@@ -154,6 +142,13 @@ class ProjectListView(ListView):
         next_index = page_obj.next_page_number() - 1 if page_obj.has_next() else 0
         context["previous_index"] = previous_index
         context["next_index"] = next_index
+
+        # Get the total number of projects
+        record_count = queryset.count()
+        context["record_count"] = record_count
+
+        # Get all statuses
+        context["statuses"] = Status.objects.all()
 
         return context
 

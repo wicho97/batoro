@@ -65,11 +65,8 @@
         <div class="c-table-responsive@wide">
           <table class="c-table c-table--highlight u-mb-small">
             <caption class="c-table__title">
-              Lista de Tareas{% if request.GET.search %}
-                <small>{{ total_search_tasks }} tareas</small>
-              {% else %}
-                <small>{{ total_tasks }} estados</small>
-              {% endif %}
+              Lista de Tareas
+                <small>{{ record_count }} tarea{{ record_count|pluralize }}</small>
             </caption>
 
             <thead class="c-table__head c-table__head--slim">
@@ -78,11 +75,10 @@
                 <th class="c-table__cell c-table__cell--head">Asunto</th>
                 <th class="c-table__cell c-table__cell--head">Estado</th>
                 <th class="c-table__cell c-table__cell--head">Prioridad</th>
-                <th class="c-table__cell c-table__cell--head">Type</th>
+                <th class="c-table__cell c-table__cell--head">Tipo</th>
                 <th class="c-table__cell c-table__cell--head">Creador</th>
                 <th class="c-table__cell c-table__cell--head">Asignado</th>
-                <th class="c-table__cell c-table__cell--head">Fecha de inicio</th>
-                <th class="c-table__cell c-table__cell--head">Fecha de finalización</th>
+                <th class="c-table__cell c-table__cell--head">Fecha de creación</th>
                 <th class="c-table__cell c-table__cell--head">
                   <span class="u-hidden-visually">Actions</span>
                 </th>
@@ -112,18 +108,13 @@
                     {% endif %}
                   </td>
                   <td class="c-table__cell">
-                    {% if task.start_date %}
-                      <span class="u-text-mute">{{ task.start_date }}</span>
-                    {% endif %}
-                  </td>
-                  <td class="c-table__cell">
-                    {% if task.finish_date %}
-                      <span class="u-text-mute">{{ task.finish_date }}</span>
+                    {% if task.created_at %}
+                      <span class="u-text-mute">{{ task.created_at }}</span>
                     {% endif %}
                   </td>
 
                  <td class="c-table__cell u-text-right">
-                    {% comment %} <a href="{% url 'task:task_detail' task.id %}" class="c-btn c-btn--info u-mr-xsmall">Detalle</a> {% endcomment %}
+                    <a href="{% url 'task:task_detail' task.id %}" class="c-btn c-btn--info u-mr-xsmall">Detalle</a>
                     <div class="c-dropdown dropdown">
                       <button class="c-btn c-btn--secondary has-dropdown dropdown-toggle" id="dropdownMenuButton10" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Acciones</button>
 
@@ -138,7 +129,7 @@
             </tbody>
           </table>
         </div>
-        {% include 'projects/pagination_project.html' %}
+        {% include 'tasks/pagination_task.html' %}
       </div>
     </div>
   </div>

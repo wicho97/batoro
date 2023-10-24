@@ -1,7 +1,7 @@
 {% extends 'base_2.html' %}
 
 {% block title %}
-  Tarea - Actualizar Tarea
+  Tarea - Editar Tarea
 {% endblock %}
 
 {% block content %}
@@ -11,10 +11,20 @@
   <div class="container u-mt-medium">
     <div class="row">
       <div class="col-lg-12 u-mb-small">
-        <h1>Actualizar Tarea</h1>
+        <h1>Editar Tarea</h1>
       </div>
     </div>
     <div class="row">
+      {% if messages %}
+        <div class="col-lg-12">
+          {% for message in messages %}
+            <div class="c-alert {% if message.tags %}{{ message.tags }}{% endif %} alert fade show">
+              <i class="c-alert__icon fa fa-check-circle"></i> {{ message }}
+              <button class="c-close" data-dismiss="alert" type="button">×</button>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
       <div class="col-lg-12 u-ml-auto u-mb-medium">
         <div class="c-card u-p-medium u-mb-medium" data-mh="invoices-cards">
           <form method="post">
@@ -108,18 +118,8 @@
                 </div>
               </div>
               <div class="col-lg-12">
-                <button class="c-btn c-btn--info" type="submit">Agregar</button>
+                <button class="c-btn c-btn--info" type="submit">Actualizar</button>
               </div>
-              {% if messages %}
-                <div class="col-lg-12 u-mt-small">
-                  {% for message in messages %}
-                    <div class="c-alert {% if message.tags %}{{ message.tags }}{% endif %} alert fade show">
-                      <i class="c-alert__icon fa fa-check-circle"></i> {{ message }}
-                      <button class="c-close" data-dismiss="alert" type="button">×</button>
-                    </div>
-                  {% endfor %}
-                </div>
-              {% endif %}
             </div>
           </form>
         </div>
