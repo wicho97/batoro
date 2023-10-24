@@ -5,34 +5,43 @@
 {% endblock %}
 
 {% block content %}
-  <div class="c-toolbar u-mb-medium">
+  <div class="c-toolbar u-border-bottom">
     <a class="c-btn c-btn--info u-mr-auto" href="{% url 'task:task_create' %}">Crear Tarea</a>
     <form class="d-flex" method="get">
-      <div class="c-field c-field--inline u-mr-small">
-        <select class="c-select has-search" name="status">
-          <option value="">Elegir estado</option>
-          {% for status in statuses %}
-            <option value="{{ status.name }}" {% if request.GET.status == status.name %}selected{% endif %}>{{ status.name }}</option>
-          {% endfor %}
-        </select>
-        <select class="c-select has-search" name="priority">
-          <option value="">Elegir prioridad</option>
-          {% for priority in priorities %}
-            <option value="{{ priority.name }}" {% if request.GET.priority == priority.name %}selected{% endif %}>{{ priority.name }}</option>
-          {% endfor %}
-        </select>
-        <select class="c-select has-search" name="type">
-          <option value="">Elegir tipo</option>
-          {% for type in types %}
-            <option value="{{ type.name }}" {% if request.GET.type == type.name %}selected{% endif %}>{{ type.name }}</option>
-          {% endfor %}
-        </select>
-      </div>
       <div class="c-field c-field--inline has-icon-right u-hidden-down@tablet u-mr-small">
         <input class="c-input" type="text" placeholder="Buscar por nombre" name="search" value="{{ request.GET.search }}" />
         <span class="c-field__icon"><i class="fa fa-search"></i></span>
       </div>
       <button class="c-btn c-btn--info" type="submit">Buscar</button>
+    </form>
+  </div>
+  <div class="c-toolbar u-mb-medium">
+    <form class="d-flex" style="width: 100%;" method="get">
+      <div class="c-field c-field--inline u-mr-small">
+        <select class="c-select has-search" name="status">
+          <option value="">Elegir estado</option>
+          {% for status in statuses %}
+          <option value="{{ status.name }}" {% if request.GET.status == status.name %}selected{% endif %}>{{ status.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="c-field c-field--inline u-mr-small">
+        <select class="c-select has-search" name="priority">
+          <option value="">Elegir prioridad</option>
+          {% for priority in priorities %}
+          <option value="{{ priority.name }}" {% if request.GET.priority == priority.name %}selected{% endif %}>{{ priority.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="c-field c-field--inline u-mr-small">
+        <select class="c-select has-search" name="type">
+          <option value="">Elegir tipo</option>
+          {% for type in types %}
+          <option value="{{ type.name }}" {% if request.GET.type == type.name %}selected{% endif %}>{{ type.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <button class="c-btn c-btn--info" type="submit">Filtrar</button>
     </form>
   </div>
   <div class="container-fluid u-mt-medium">
@@ -73,6 +82,7 @@
                 <th class="c-table__cell c-table__cell--head">Creador</th>
                 <th class="c-table__cell c-table__cell--head">Asignado</th>
                 <th class="c-table__cell c-table__cell--head">Fecha de inicio</th>
+                <th class="c-table__cell c-table__cell--head">Fecha de finalización</th>
                 <th class="c-table__cell c-table__cell--head">
                   <span class="u-hidden-visually">Actions</span>
                 </th>
@@ -86,15 +96,34 @@
                     <span class="u-text-mute">{{ task.id }}</span>
                   </td>
                   <td class="c-table__cell">{{ task.subject }}</td>
-                  <td class="c-table__cell">{{ task.status }}</td>
-                  <td class="c-table__cell">{{ task.priority }}</td>
-                  <td class="c-table__cell">{{ task.type }}</td>
+                  <td class="c-table__cell">
+                    <span class="c-badge c-badge--small" style="background-color: {{ task.status.color }};">{{ task.status }}</span>
+                  </td>
+                  <td class="c-table__cell">
+                    <span class="c-badge c-badge--small" style="background-color: {{ task.priority.color }};">{{ task.priority }}</span>
+                  </td>
+                  <td class="c-table__cell">
+                    <span class="c-badge c-badge--small" style="background-color: {{ task.type.color }};">{{ task.type }}</span>
+                  </td>
                   <td class="c-table__cell">{{ task.creator }}</td>
-                  <td class="c-table__cell">{{ task.assigned_to }}</td>
-                  <td class="c-table__cell"><span class="u-text-mute">{{ task.start_date }}</span></td>
+                  <td class="c-table__cell">
+                    {% if task.assigned_to %}
+                      {{ task.assigned_to }}
+                    {% endif %}
+                  </td>
+                  <td class="c-table__cell">
+                    {% if task.start_date %}
+                      <span class="u-text-mute">{{ task.start_date }}</span>
+                    {% endif %}
+                  </td>
+                  <td class="c-table__cell">
+                    {% if task.finish_date %}
+                      <span class="u-text-mute">{{ task.finish_date }}</span>
+                    {% endif %}
+                  </td>
 
                  <td class="c-table__cell u-text-right">
-                    <a href="{% url 'task:task_detail' task.id %}" class="c-btn c-btn--info u-mr-xsmall">Detalle</a>
+                    {% comment %} <a href="{% url 'task:task_detail' task.id %}" class="c-btn c-btn--info u-mr-xsmall">Detalle</a> {% endcomment %}
                     <div class="c-dropdown dropdown">
                       <button class="c-btn c-btn--secondary has-dropdown dropdown-toggle" id="dropdownMenuButton10" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Acciones</button>
 

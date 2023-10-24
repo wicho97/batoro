@@ -1,19 +1,32 @@
+let elements_datepicker = [
+    "#id_date_of_birth",
+    "#id_start_date",
+    "#id_finish_date"
+];
 
-$("#id_date_of_birth").datepicker({
-    format: 'yyyy-mm-dd'
+elements_datepicker.forEach(element => {
+    $(element).datepicker({
+        format: 'yyyy-mm-dd'
+    });
 });
-$("#id_start_date").datepicker({
-    format: 'yyyy-mm-dd'
+
+let elements_select2 = [
+    "#id_status",
+    "#id_project_manager",
+    "#id_client",
+    "#id_priority",
+    "#id_type",
+    "#id_assigned_to",
+    "#id_project"
+];
+
+elements_select2.forEach(element => {
+    $(element).select2();
 });
-$("#id_finish_date").datepicker({
-    format: 'yyyy-mm-dd'
-});
+
 $("#id_date_of_birth").attr('placeholder', '1990/12/25');
 $("#id_start_date").attr('placeholder', '1990/12/25');
 $("#id_finish_date").attr('placeholder', '1990/12/25');
-$("#id_status").select2();
-$("#id_project_manager").select2();
-$("#id_client").select2();
 $("#id_public").removeClass('c-input');
 
 // Projects

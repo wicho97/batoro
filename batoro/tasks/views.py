@@ -10,9 +10,11 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.contrib.messages.views import SuccessMessageMixin
 from django.http import HttpResponseRedirect
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 
 from .models import Status, Priority, Type, Task
-from .forms import StatusForm, PriorityForm, TypeForm
+from .forms import StatusForm, PriorityForm, TypeForm, TaskForm
 
 # Create your views here.
 
@@ -95,7 +97,8 @@ def delete_task_status(request, task_status_id):
     status = Status.objects.get(id=task_status_id)
     status_name = status.name
     status.delete()
-    messages.success(request, f"El estado '{status_name}' se ha borrado exitosamente.")
+    messages.success(
+        request, f"El estado '{status_name}' se ha borrado exitosamente.")
     return HttpResponseRedirect(reverse_lazy("task:status_list"))
 
 
@@ -177,7 +180,8 @@ def delete_task_priority(request, task_priority_id):
     status = Priority.objects.get(id=task_priority_id)
     status_name = status.name
     status.delete()
-    messages.success(request, f"El estado '{status_name}' se ha borrado exitosamente.")
+    messages.success(
+        request, f"El estado '{status_name}' se ha borrado exitosamente.")
     return HttpResponseRedirect(reverse_lazy("task:priority_list"))
 
 
@@ -259,10 +263,12 @@ def delete_task_type(request, task_type_id):
     status = Type.objects.get(id=task_type_id)
     status_name = status.name
     status.delete()
-    messages.success(request, f"El estado '{status_name}' se ha borrado exitosamente.")
+    messages.success(
+        request, f"El estado '{status_name}' se ha borrado exitosamente.")
     return HttpResponseRedirect(reverse_lazy("task:type_list"))
 
 
+@method_decorator(login_required, name="dispatch")
 class TaskListView(ListView):
     model = Task
     template_name = "tasks/task_list.html"
@@ -308,19 +314,29 @@ class TaskListView(ListView):
         return context
 
 
-class TaskCreateView(CreateView):
+@method_decorator(login_required, name="dispatch")
+class TaskCreateView(LoginRequiredMixin, CreateView):
     model = Task
     template_name = "tasks/task_create.html"
-    fields = "__all__"
+    form_class = TaskForm
+    success_message = "Creado con éxito."
+    success_url = reverse_lazy("task:task_list")
+
+    def form_valid(self, form):
+        form.instance.creator = self.request.user
+        return super(TaskCreateView, self).form_valid(form)
 
 
-# class TaskUpdateView(UpdateView):
-#     model = Task
-#     template_name = "tasks/task_form.html"
-#     fields = "__all__"
+@method_decorator(login_required, name="dispatch")
+class TaskUpdateView(UpdateView):
+    model = Task
+    template_name = "tasks/task_update.html"
+    form_class = TaskForm
+    success_message = "Actualizado con éxito."
 
+    def get_success_url(self):
+        return reverse_lazy("task:task_update", args=(self.object.pk,))
 
-# class TaskDeleteView(DeleteView):
-#     model = Task
-#     template_name = "tasks/task_confirm_delete.html"
-#     success_url = reverse_lazy("task:task_list")
+    def form_valid(self, form):
+        messages.success(self.request, self.success_message)
+        return super(TaskUpdateView, self).form_valid(form)

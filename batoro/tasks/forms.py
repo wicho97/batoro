@@ -1,6 +1,6 @@
 from django.forms import ModelForm
 
-from .models import Status, Priority, Type
+from .models import Status, Priority, Type, Task
 
 
 class StatusForm(ModelForm):
@@ -34,6 +34,18 @@ class TypeForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(TypeForm, self).__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs["class"] = "c-input"
+            visible.field.widget.attrs["autocomplete"] = "off"
+
+
+class TaskForm(ModelForm):
+    class Meta:
+        model = Task
+        exclude = ["creator", "estimated_time"]
+
+    def __init__(self, *args, **kwargs):
+        super(TaskForm, self).__init__(*args, **kwargs)
         for visible in self.visible_fields():
             visible.field.widget.attrs["class"] = "c-input"
             visible.field.widget.attrs["autocomplete"] = "off"

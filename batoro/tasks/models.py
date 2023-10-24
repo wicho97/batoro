@@ -64,7 +64,7 @@ class Task(TimestampMixin, models.Model):
     project = models.ForeignKey(Project, on_delete=models.SET_NULL, null=True)
     start_date = models.DateField(blank=True, null=True)
     finish_date = models.DateField(blank=True, null=True)
-    estimated_time = models.FloatField()
+    estimated_time = models.FloatField(default=0)
 
     def __str__(self):
         return self.subject
