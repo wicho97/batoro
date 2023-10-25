@@ -36,11 +36,8 @@
         <div class="c-table-responsive@desktop">
           <table class="c-table c-table--highlight u-mb-small">
             <caption class="c-table__title">
-              Lista de Tipos de Tareas{% if request.GET.search %}
-                <small>{{ total_search_statuses }} tipo</small>
-              {% else %}
-                <small>{{ total_statuses }} tipo</small>
-              {% endif %}
+              Lista de Tipos de Tareas
+              <small>{{ record_count }} tipo{{ record_count|pluralize }}</small>
             </caption>
 
             <thead class="c-table__head c-table__head--slim">

@@ -48,11 +48,13 @@ urlpatterns = [
     path(
         route="priority",
         view=PriorityListView.as_view(),
-        name="priority_list"),
+        name="priority_list"
+    ),
     path(
         route="priority/create/",
         view=PriorityCreateView.as_view(),
-        name="priority_create"),
+        name="priority_create"
+    ),
     path(
         route="priority/update/<int:pk>/",
         view=PriorityUpdateView.as_view(),
@@ -67,38 +69,47 @@ urlpatterns = [
     path(
         route="type",
         view=TypeListView.as_view(),
-        name="type_list"),
+        name="type_list"
+    ),
     path(
         route="type/create/",
         view=TypeCreateView.as_view(),
-        name="type_create"),
+        name="type_create"
+    ),
     path(
         route="type/update/<int:pk>/",
         view=TypeUpdateView.as_view(),
-        name="type_update"),
+        name="type_update"
+    ),
     path(
         route="type/delete/<int:task_type_id>/",
         view=delete_task_type,
-        name="type_delete"),
+        name="type_delete"
+    ),
     # Tasks
     path(
         route="",
         view=TaskListView.as_view(),
-        name="task_list"),
+        name="task_list"
+    ),
     path(
         route="create/",
         view=TaskCreateView.as_view(),
-        name="task_create"),
+        name="task_create"
+    ),
     path(
         route="update/<int:pk>/",
         view=TaskUpdateView.as_view(),
-        name="task_update"),
+        name="task_update"
+    ),
     path(
         route="detail/<int:pk>/",
         view=TaskDetailView.as_view(),
-        name="task_detail"),
+        name="task_detail"
+    ),
     path(
         route="delete/<int:task_id>/",
         view=delete_task,
-        name="task_delete"),
+        name="task_delete"
+    ),
 ]

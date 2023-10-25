@@ -36,11 +36,8 @@
         <div class="c-table-responsive@desktop">
           <table class="c-table c-table--highlight u-mb-small">
             <caption class="c-table__title">
-              Lista de Prioridades de Tareas{% if request.GET.search %}
-                <small>{{ total_search_statuses }} prioridades</small>
-              {% else %}
-                <small>{{ total_statuses }} prioridades</small>
-              {% endif %}
+              Lista de Prioridades de Tarea
+              <small>{{ record_count }} prioridade{{ record_count|pluralize }}</small>
             </caption>
 
             <thead class="c-table__head c-table__head--slim">

@@ -39,9 +39,6 @@ class StatusListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        # Get the total number of statuses
-        context["total_statuses"] = self.model.objects.count()
-
         # pagination
         queryset = self.get_queryset()
         paginator = Paginator(queryset, self.paginate_by)
@@ -57,14 +54,10 @@ class StatusListView(ListView):
         context["previous_index"] = previous_index
         context["next_index"] = next_index
 
-        # Add search parameter to URL
-        search = self.request.GET.get("search", "")
-        if search:
-            # Get the total number of statuses by filter
-            context["total_search_statuses"] = self.model.objects.filter(
-                name__icontains=search
-            ).count()
-            context["search"] = search
+
+        # Get the total number of statuses
+        record_count = queryset.count()
+        context["record_count"] = record_count
 
         return context
 

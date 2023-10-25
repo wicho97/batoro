@@ -36,11 +36,8 @@
         <div class="c-table-responsive@desktop">
           <table class="c-table c-table--highlight u-mb-small">
             <caption class="c-table__title">
-              Lista de Estados de Proyectos{% if request.GET.search %}
-                <small>{{ total_search_statuses }} estados</small>
-              {% else %}
-                <small>{{ total_statuses }} estados</small>
-              {% endif %}
+              Lista de Estados de Proyectos
+              <small>{{ record_count }} tarea{{ record_count|pluralize }}</small>
             </caption>
 
             <thead class="c-table__head c-table__head--slim">
