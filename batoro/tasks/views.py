@@ -98,7 +98,8 @@ def delete_task_status(request, task_status_id):
     status = Status.objects.get(id=task_status_id)
     status_name = status.name
     status.delete()
-    messages.success(request, f"El estado '{status_name}' se ha borrado exitosamente.")
+    messages.success(
+        request, f"El estado '{status_name}' se ha borrado exitosamente.")
     return HttpResponseRedirect(reverse_lazy("task:status_list"))
 
 
@@ -180,7 +181,8 @@ def delete_task_priority(request, task_priority_id):
     status = Priority.objects.get(id=task_priority_id)
     status_name = status.name
     status.delete()
-    messages.success(request, f"El estado '{status_name}' se ha borrado exitosamente.")
+    messages.success(
+        request, f"El estado '{status_name}' se ha borrado exitosamente.")
     return HttpResponseRedirect(reverse_lazy("task:priority_list"))
 
 
@@ -262,7 +264,8 @@ def delete_task_type(request, task_type_id):
     status = Type.objects.get(id=task_type_id)
     status_name = status.name
     status.delete()
-    messages.success(request, f"El estado '{status_name}' se ha borrado exitosamente.")
+    messages.success(
+        request, f"El estado '{status_name}' se ha borrado exitosamente.")
     return HttpResponseRedirect(reverse_lazy("task:type_list"))
 
 
@@ -285,13 +288,16 @@ class TaskListView(ListView):
         if search:
             queryset = queryset.filter(subject__icontains=search)
         elif status and priority and type:
-            queryset = queryset.filter(status__name=status, priority__name=priority, type__name=type)
+            queryset = queryset.filter(
+                status__name=status, priority__name=priority, type__name=type)
         elif status and priority:
-            queryset = queryset.filter(status__name=status, priority__name=priority)
+            queryset = queryset.filter(
+                status__name=status, priority__name=priority)
         elif status and type:
             queryset = queryset.filter(status__name=status, type__name=type)
         elif priority and type:
-            queryset = queryset.filter(priority__name=priority, type__name=type)
+            queryset = queryset.filter(
+                priority__name=priority, type__name=type)
         elif status:
             queryset = queryset.filter(status__name=status)
         elif priority:
@@ -377,3 +383,14 @@ class TaskDetailView(DetailView):
     #     if profile:
     #         context["profile_photo"] = profile.photo
     #     return context
+
+
+@login_required
+def delete_task(request, task_id):
+    task = Task.objects.get(id=task_id)
+    task_subject = task.subject
+    task.delete()
+    messages.success(
+        request, f"La tarea '{task_subject}' se ha borrado exitosamente."
+    )
+    return HttpResponseRedirect(reverse_lazy("task:task_list"))

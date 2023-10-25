@@ -16,6 +16,7 @@ from .views import (
     TaskCreateView,
     TaskUpdateView,
     TaskDetailView,
+    delete_task,
 )
 
 
@@ -23,34 +24,81 @@ app_name = "task"
 
 urlpatterns = [
     # Status
-    path("status", StatusListView.as_view(), name="status_list"),
-    path("status/create/", StatusCreateView.as_view(), name="status_create"),
-    path("status/update/<int:pk>/", StatusUpdateView.as_view(), name="status_update"),
     path(
-        "status/delete/<int:task_status_id>/", delete_task_status, name="status_delete"
+        route="status",
+        view=StatusListView.as_view(),
+        name="status_list"
+    ),
+    path(
+        route="status/create/",
+        view=StatusCreateView.as_view(),
+        name="status_create"
+    ),
+    path(
+        route="status/update/<int:pk>/",
+        view=StatusUpdateView.as_view(),
+        name="status_update"
+    ),
+    path(
+        route="status/delete/<int:task_status_id>/",
+        view=delete_task_status,
+        name="status_delete"
     ),
     # Priority
-    path("priority", PriorityListView.as_view(), name="priority_list"),
-    path("priority/create/", PriorityCreateView.as_view(), name="priority_create"),
     path(
-        "priority/update/<int:pk>/",
-        PriorityUpdateView.as_view(),
+        route="priority",
+        view=PriorityListView.as_view(),
+        name="priority_list"),
+    path(
+        route="priority/create/",
+        view=PriorityCreateView.as_view(),
+        name="priority_create"),
+    path(
+        route="priority/update/<int:pk>/",
+        view=PriorityUpdateView.as_view(),
         name="priority_update",
     ),
     path(
-        "priority/delete/<int:task_priority_id>/",
-        delete_task_priority,
+        route="priority/delete/<int:task_priority_id>/",
+        view=delete_task_priority,
         name="priority_delete",
     ),
     # Type
-    path("type", TypeListView.as_view(), name="type_list"),
-    path("type/create/", TypeCreateView.as_view(), name="type_create"),
-    path("type/update/<int:pk>/", TypeUpdateView.as_view(), name="type_update"),
-    path("type/delete/<int:task_type_id>/", delete_task_type, name="type_delete"),
+    path(
+        route="type",
+        view=TypeListView.as_view(),
+        name="type_list"),
+    path(
+        route="type/create/",
+        view=TypeCreateView.as_view(),
+        name="type_create"),
+    path(
+        route="type/update/<int:pk>/",
+        view=TypeUpdateView.as_view(),
+        name="type_update"),
+    path(
+        route="type/delete/<int:task_type_id>/",
+        view=delete_task_type,
+        name="type_delete"),
     # Tasks
-    path("", TaskListView.as_view(), name="task_list"),
-    path("create/", TaskCreateView.as_view(), name="task_create"),
-    path("update/<int:pk>/", TaskUpdateView.as_view(), name="task_update"),
-    path("detail/<int:pk>/", TaskDetailView.as_view(), name="task_detail"),
-    # path("delete/<int:pk>/", delete_task_status.as_view(), name="task_delete"),
+    path(
+        route="",
+        view=TaskListView.as_view(),
+        name="task_list"),
+    path(
+        route="create/",
+        view=TaskCreateView.as_view(),
+        name="task_create"),
+    path(
+        route="update/<int:pk>/",
+        view=TaskUpdateView.as_view(),
+        name="task_update"),
+    path(
+        route="detail/<int:pk>/",
+        view=TaskDetailView.as_view(),
+        name="task_detail"),
+    path(
+        route="delete/<int:task_id>/",
+        view=delete_task,
+        name="task_delete"),
 ]
