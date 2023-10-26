@@ -54,7 +54,6 @@ class StatusListView(ListView):
         context["previous_index"] = previous_index
         context["next_index"] = next_index
 
-
         # Get the total number of statuses
         record_count = queryset.count()
         context["record_count"] = record_count
@@ -155,9 +154,10 @@ class ProjectDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         project = self.get_object()
-        profile = project.project_manager.profile
-        if profile:
-            context["profile_photo"] = profile.photo
+        if project.project_manager:
+            profile = project.project_manager.profile
+            if profile:
+                context["profile_photo"] = profile.photo
         return context
 
 

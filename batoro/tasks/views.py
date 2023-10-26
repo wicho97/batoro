@@ -352,13 +352,14 @@ class TaskDetailView(DetailView):
     template_name = "tasks/task_detail.html"
     context_object_name = "task"
 
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #     project = self.get_object()
-    #     profile = project.project_manager.profile
-    #     if profile:
-    #         context["profile_photo"] = profile.photo
-    #     return context
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        task = self.get_object()
+        if task.assigned_to:
+            profile = task.assigned_to.profile
+            if profile:
+                context["profile_photo"] = profile.photo
+        return context
 
 
 @login_required

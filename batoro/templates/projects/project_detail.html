@@ -67,11 +67,13 @@
             <div class="u-p-medium">
               <h5 class="u-h6 u-mb-medium">Cliente</h5>
               <div class="o-media u-mb-small">
-                <div class="o-media__img u-mr-xsmall">
-                  <div class="c-avatar c-avatar--xsmall">
-                    <img class="c-avatar__img" src="{{ profile_photo.url }}" alt="Profile Title" />
+                {% if profile_photo %}
+                  <div class="o-media__img u-mr-xsmall">
+                    <div class="c-avatar c-avatar--xsmall">
+                      <img class="c-avatar__img" src="{{ profile_photo.url }}" alt="Profile Title" />
+                    </div>
                   </div>
-                </div>
+                {% endif %}
                 <div class="o-media__body">
                   <h6 class="u-text-small u-mb-zero">{{ project.project_manager }}</h6>
                 </div>
