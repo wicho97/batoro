@@ -83,7 +83,7 @@ class Comentary(TimestampMixin, models.Model):
         return self.user + ": " + self.task
 
 
-class Attachment(models.Model):
+class Attachment(TimestampMixin, models.Model):
     file = models.FileField(upload_to="file/%Y/%m/%d/", max_length=100, blank=True)
     task = models.ForeignKey(
         Task, related_name="attachments_task", on_delete=models.CASCADE, null=True

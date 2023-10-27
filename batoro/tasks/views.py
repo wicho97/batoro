@@ -1,3 +1,4 @@
+from django.shortcuts import redirect
 from django.views.generic import (
     ListView,
     CreateView,
@@ -12,6 +13,7 @@ from django.utils.decorators import method_decorator
 from django.contrib.messages.views import SuccessMessageMixin
 from django.http import HttpResponseRedirect
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.models import User
 
 
 from .models import Status, Priority, Type, Task
@@ -354,12 +356,38 @@ class TaskDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+
+        # Get all statuses
+        context["statuses"] = Status.objects.all()
+
+        # Get all statuses
+        context["users"] = User.objects.all()
+
         task = self.get_object()
         if task.assigned_to:
             profile = task.assigned_to.profile
             if profile:
                 context["profile_photo"] = profile.photo
         return context
+
+    def post(self, request, *args, **kwargs):
+        task = self.get_object()
+
+        # Update task status
+        new_status = request.POST.get("status")
+        status_instance = Status.objects.get(name=new_status)
+        task.status = status_instance
+
+        # Update the task manager
+        new_assigned_to = request.POST.get("assigned_to")
+        user_instance = User.objects.get(username=new_assigned_to)
+        task.assigned_to = user_instance
+
+        # Save changes to the task
+        task.save()
+
+        # Redirect to task details page
+        return HttpResponseRedirect(self.request.path_info)
 
 
 @login_required

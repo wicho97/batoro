@@ -75,23 +75,24 @@
         <div class="c-card u-mb-medium">
           <div class="u-p-medium">
             <h5 class="u-h6 u-mb-medium">Actualizar estado y encargado</h5>
-            <form>
+            <form method="post">
+              {% csrf_token %}
               <h5 class="c-search-form__label">Estado</h5>
               <div class="c-search-form__section u-flex">
                 <select class="c-select has-search" name="status">
                   <option value="">Elegir estado</option>
                   {% for status in statuses %}
-                  <option value="{{ status.name }}" {% if request.GET.status == status.name %}selected{% endif %}>{{ status.name }}</option>
+                  <option value="{{ status.name }}" {% if task.status.name == status.name %}selected{% endif %}>{{ status.name }}</option>
                   {% endfor %}
                 </select>
               </div>
 
               <h5 class="c-search-form__label">Encargado</h5>
               <div class="c-search-form__section u-flex">
-                <select class="c-select has-search" name="status">
+                <select class="c-select has-search" name="assigned_to">
                   <option value="">Elegir encargado</option>
-                  {% for status in statuses %}
-                  <option value="{{ status.name }}" {% if request.GET.status == status.name %}selected{% endif %}>{{ status.name }}</option>
+                  {% for user in users %}
+                  <option value="{{ user.username }}" {% if task.assigned_to.username == user.username %}selected{% endif %}>{{ user.username }}</option>
                   {% endfor %}
                 </select>
               </div>
