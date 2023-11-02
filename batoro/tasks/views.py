@@ -5,7 +5,7 @@ from django.views.generic import (
     UpdateView,
     DetailView,
 )
-from django.urls import reverse_lazy
+from django.urls import reverse, reverse_lazy
 from django.core.paginator import Paginator
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -14,10 +14,11 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.http import HttpResponseRedirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
+from django.views.generic.edit import FormMixin
 
 
 from .models import Status, Priority, Type, Task
-from .forms import StatusForm, PriorityForm, TypeForm, TaskForm
+from .forms import StatusForm, PriorityForm, TypeForm, TaskForm, TaskStatusAssignedToForm
 
 # Create your views here.
 
@@ -349,44 +350,51 @@ class TaskUpdateView(UpdateView):
 
 
 @method_decorator(login_required, name="dispatch")
-class TaskDetailView(DetailView):
+class TaskDetailView(FormMixin, DetailView):
     model = Task
     template_name = "tasks/task_detail.html"
     context_object_name = "task"
+    form_class = TaskStatusAssignedToForm
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        # Get all statuses
-        context["statuses"] = Status.objects.all()
-
-        # Get all statuses
-        context["users"] = User.objects.all()
-
+        # Add profile photo
         task = self.get_object()
+
         if task.assigned_to:
             profile = task.assigned_to.profile
             if profile:
                 context["profile_photo"] = profile.photo
+
         return context
 
-    def post(self, request, *args, **kwargs):
-        task = self.get_object()
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        form = self.get_form()
+        context = self.get_context_data(object=self.object, form=form)
+        return self.render_to_response(context)
 
-        # Update task status
-        new_status = request.POST.get("status")
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        form = self.get_form()
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
+
+    def form_valid(self, form):
+        # Procesa los datos del formulario y realiza las acciones necesarias
+        task = self.object
+        new_status = form.cleaned_data.get("status")
         status_instance = Status.objects.get(name=new_status)
         task.status = status_instance
-
-        # Update the task manager
-        new_assigned_to = request.POST.get("assigned_to")
+        new_assigned_to = form.cleaned_data.get("assigned_to")
         user_instance = User.objects.get(username=new_assigned_to)
         task.assigned_to = user_instance
-
-        # Save changes to the task
         task.save()
-
-        # Redirect to task details page
+        # Redirige al detalle de la tarea
+        messages.success(self.request, "Estado y Encargado actualizados.")
         return HttpResponseRedirect(self.request.path_info)
 
 

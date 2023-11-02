@@ -49,3 +49,15 @@ class TaskForm(ModelForm):
         for visible in self.visible_fields():
             visible.field.widget.attrs["class"] = "c-input"
             visible.field.widget.attrs["autocomplete"] = "off"
+
+
+class TaskStatusAssignedToForm(ModelForm):
+    class Meta:
+        model = Task
+        fields = ["status", "assigned_to"]
+
+    def __init__(self, *args, **kwargs):
+        super(TaskStatusAssignedToForm, self).__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs["class"] = "c-input"
+            visible.field.widget.attrs["autocomplete"] = "off"

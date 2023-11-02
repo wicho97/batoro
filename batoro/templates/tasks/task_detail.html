@@ -9,6 +9,16 @@
 
   <div class="container-fluid">
     <div class="row">
+      {% if messages %}
+        <div class="col-lg-12">
+          {% for message in messages %}
+            <div class="c-alert {% if message.tags %}{{ message.tags }}{% endif %} alert fade show">
+              <i class="c-alert__icon fa fa-check-circle"></i> {{ message }}
+              <button class="c-close" data-dismiss="alert" type="button">×</button>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
       <div class="col-xl-8">
         <article class="c-stage">
           <div class="c-stage__header o-media u-justify-start">
@@ -18,7 +28,6 @@
           </div>
 
           <div class="c-stage__panel u-p-medium">
-
             {% if task.description %}
               <p class="u-text-mute u-text-uppercase u-text-small u-mb-xsmall u-border-bottom">Descripción</p>
               <p class="u-mb-medium">{{ task.description }}</p>
@@ -77,26 +86,21 @@
             <h5 class="u-h6 u-mb-medium">Actualizar estado y encargado</h5>
             <form method="post">
               {% csrf_token %}
-              <h5 class="c-search-form__label">Estado</h5>
-              <div class="c-search-form__section u-flex">
-                <select class="c-select has-search" name="status">
-                  <option value="">Elegir estado</option>
-                  {% for status in statuses %}
-                  <option value="{{ status.name }}" {% if task.status.name == status.name %}selected{% endif %}>{{ status.name }}</option>
-                  {% endfor %}
-                </select>
+              <div class="c-field u-mb-small">
+                <label class="c-field__label">Estado</label>
+                {{ form.status }}
+                {% for error in form.status.errors %}
+                  <small class="c-field__message u-color-danger"><i class="fa fa-times-circle"></i>{{ error }}</small>
+                {% endfor %}
               </div>
 
-              <h5 class="c-search-form__label">Encargado</h5>
-              <div class="c-search-form__section u-flex">
-                <select class="c-select has-search" name="assigned_to">
-                  <option value="">Elegir encargado</option>
-                  {% for user in users %}
-                  <option value="{{ user.username }}" {% if task.assigned_to.username == user.username %}selected{% endif %}>{{ user.username }}</option>
-                  {% endfor %}
-                </select>
+              <div class="c-field u-mb-small">
+                <label class="c-field__label">Encargado</label>
+                {{ form.assigned_to }}
+                {% for error in form.assigned_to.errors %}
+                  <small class="c-field__message u-color-danger"><i class="fa fa-times-circle"></i>{{ error }}</small>
+                {% endfor %}
               </div>
-
               <button class="c-btn c-btn--info c-btn--fullwidth" type="submit">Actualizar</button>
             </form>
           </div>
@@ -106,8 +110,8 @@
           <h5 class="u-h6 u-mb-medium">Subir archivos</h5>
           <form action="/file-upload" class="dropzone dz-clickable" id="custom-dropzone" style="height: 180px;">
             <div class="dz-message" data-dz-message="">
-                <i class="dz-icon fa fa-cloud-upload"></i>
-                <span>Drag a file here or browse for a file to upload.</span>
+              <i class="dz-icon fa fa-cloud-upload"></i>
+              <span>Drag a file here or browse for a file to upload.</span>
             </div>
           </form>
           <button class="c-btn c-btn--info c-btn--fullwidth u-mt-small" type="submit">Subir archivos</button>
