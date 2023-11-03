@@ -15,10 +15,12 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.views.generic.edit import FormMixin
+from django.views import View
+from django.http import JsonResponse
 
 
 from .models import Status, Priority, Type, Task
-from .forms import StatusForm, PriorityForm, TypeForm, TaskForm, TaskStatusAssignedToForm
+from .forms import StatusForm, PriorityForm, TypeForm, TaskForm, TaskStatusAssignedToForm, AttachmentForm
 
 # Create your views here.
 
@@ -354,7 +356,8 @@ class TaskDetailView(FormMixin, DetailView):
     model = Task
     template_name = "tasks/task_detail.html"
     context_object_name = "task"
-    form_class = TaskStatusAssignedToForm
+    form_classA = TaskStatusAssignedToForm
+    form_classB = AttachmentForm
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -367,7 +370,31 @@ class TaskDetailView(FormMixin, DetailView):
             if profile:
                 context["profile_photo"] = profile.photo
 
+        context["status_form"] = self.form_classA(
+            instance=self.object, **self.get_form_kwargs())
+        context["attachment_form"] = self.form_classB(
+            instance=self.object, **self.get_form_kwargs())
+
         return context
+
+    def get_initial(self):
+        initial = super().get_initial()
+        # Aquí puedes asignar los valores iniciales a los campos del formulario,
+        # por ejemplo, puedes obtener los valores de tu modelo y asignarlos así:
+        initial['status'] = self.object.status
+        initial['assigned_to'] = self.object.assigned_to
+        return initial
+
+    def get_form(self, form_class=None):
+        if form_class == self.form_classA:
+            return self.form_classA(instance=self.object, **self.get_form_kwargs())
+        elif form_class == self.form_classB:
+            return self.form_classB(instance=self.object, **self.get_form_kwargs())
+        elif form_class is None:
+            # Formulario predeterminado
+            return self.form_classA(instance=self.object, **self.get_form_kwargs())
+        else:
+            return super().get_form(form_class=form_class)
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
@@ -377,26 +404,34 @@ class TaskDetailView(FormMixin, DetailView):
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
-        form = self.get_form()
-        if form.is_valid():
-            return self.form_valid(form)
+        formA = self.get_form(self.form_classA)
+        formB = self.get_form(self.form_classB)
+        if formA.is_valid() and formB.is_valid():
+            return self.form_valid(formA, formB)
         else:
-            return self.form_invalid(form)
+            return self.form_invalid(formA, formB)
 
-    def form_valid(self, form):
-        # Procesa los datos del formulario y realiza las acciones necesarias
+    def form_valid(self, formA, formB):
         task = self.object
-        new_status = form.cleaned_data.get("status")
+
+        new_status = formA.cleaned_data.get("status")
         status_instance = Status.objects.get(name=new_status)
         task.status = status_instance
-        new_assigned_to = form.cleaned_data.get("assigned_to")
+
+        new_assigned_to = formA.cleaned_data.get("assigned_to")
         user_instance = User.objects.get(username=new_assigned_to)
         task.assigned_to = user_instance
-        task.save()
-        # Redirige al detalle de la tarea
+
+        formA.save()
+        formB.save()
+
         messages.success(self.request, "Estado y Encargado actualizados.")
         return HttpResponseRedirect(self.request.path_info)
 
+    def form_invalid(self, formA, formB):
+        return self.render_to_response(
+            self.get_context_data(formA=formA, formB=formB)
+        )
 
 @login_required
 def delete_task(request, task_id):

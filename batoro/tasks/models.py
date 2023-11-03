@@ -88,6 +88,9 @@ class Attachment(TimestampMixin, models.Model):
     task = models.ForeignKey(
         Task, related_name="attachments_task", on_delete=models.CASCADE, null=True
     )
+    user = models.ForeignKey(
+        User, related_name="attachments_user", on_delete=models.CASCADE, null=True
+    )
 
     def __str__(self):
         return self.file

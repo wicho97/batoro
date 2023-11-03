@@ -1,6 +1,6 @@
 from django.forms import ModelForm
 
-from .models import Status, Priority, Type, Task
+from .models import Status, Priority, Type, Task, Attachment
 
 
 class StatusForm(ModelForm):
@@ -61,3 +61,9 @@ class TaskStatusAssignedToForm(ModelForm):
         for visible in self.visible_fields():
             visible.field.widget.attrs["class"] = "c-input"
             visible.field.widget.attrs["autocomplete"] = "off"
+
+
+class AttachmentForm(ModelForm):
+    class Meta:
+        model = Attachment
+        fields = ["file"]
