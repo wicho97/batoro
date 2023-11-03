@@ -108,11 +108,12 @@
 
         <div class="c-card u-p-medium">
           <h5 class="u-h6 u-mb-medium">Subir archivos</h5>
-          <form method="post" enctype="multipart/form-data" class="dropzone" id="attachment-dropzone" style="height: 180px;">
+          <form class="dropzone" action="{% url "task:upload_file" %}" method="post" enctype="multipart/form-data">
             {% csrf_token %}
-            {{ attachment_form.file }}
           </form>
-          <button class="c-btn c-btn--info c-btn--fullwidth u-mt-small" type="submit">Subir archivos</button>
+          <button id="submit-all">
+              Submit all files
+          </button>
         </div>
       </div>
     </div>

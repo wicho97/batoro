@@ -19,7 +19,11 @@ from django.views import View
 from django.http import JsonResponse
 
 
-from .models import Status, Priority, Type, Task
+from django.template import RequestContext
+from django.shortcuts import render
+
+
+from .models import Status, Priority, Type, Task, Attachment
 from .forms import StatusForm, PriorityForm, TypeForm, TaskForm, TaskStatusAssignedToForm, AttachmentForm
 
 # Create your views here.
@@ -442,3 +446,18 @@ def delete_task(request, task_id):
         request, f"La tarea '{task_subject}' se ha borrado exitosamente."
     )
     return HttpResponseRedirect(reverse_lazy("task:task_list"))
+
+
+def upload_file(request):
+    if request.method == 'POST':
+        form = AttachmentForm(request.POST, request.FILES)
+        if form.is_valid():
+            new_file = Attachment(file = request.FILES['file'])
+            new_file.save()
+ 
+            return HttpResponseRedirect(reverse('task:task_detail'))
+    else:
+        form = AttachmentForm()
+ 
+    data = {'form': form}
+    return render('task/task-detail.html', data, context_instance=RequestContext(request))

@@ -136,3 +136,16 @@ function showAlertTask(status_id, status_name) {
         }
     })
 }
+
+Dropzone.options.customDropzone = {
+    paramName: "imagen", // el nombre de nuestro input
+    autoProcessQueue : true,
+    parallelUploads: 1,
+
+    init: function() {
+        this.on("success", function(file, responseText) {
+            // evento lanzado al terminar de subir las imágenes en cola
+            console.log(responseText);
+        });
+    }
+};

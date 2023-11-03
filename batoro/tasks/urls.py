@@ -17,6 +17,7 @@ from .views import (
     TaskUpdateView,
     TaskDetailView,
     delete_task,
+    upload_file,
 )
 
 
@@ -70,4 +71,5 @@ urlpatterns = [
     path(route="update/<int:pk>/", view=TaskUpdateView.as_view(), name="task_update"),
     path(route="detail/<int:pk>/", view=TaskDetailView.as_view(), name="task_detail"),
     path(route="delete/<int:task_id>/", view=delete_task, name="task_delete"),
+    path(route="upload-file/", view=upload_file, name='upload_file'),
 ]
