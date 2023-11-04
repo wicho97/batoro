@@ -360,8 +360,7 @@ class TaskDetailView(FormMixin, DetailView):
     model = Task
     template_name = "tasks/task_detail.html"
     context_object_name = "task"
-    form_classA = TaskStatusAssignedToForm
-    form_classB = AttachmentForm
+    form_class = TaskStatusAssignedToForm
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -374,11 +373,6 @@ class TaskDetailView(FormMixin, DetailView):
             if profile:
                 context["profile_photo"] = profile.photo
 
-        context["status_form"] = self.form_classA(
-            instance=self.object, **self.get_form_kwargs())
-        context["attachment_form"] = self.form_classB(
-            instance=self.object, **self.get_form_kwargs())
-
         return context
 
     def get_initial(self):
@@ -389,17 +383,6 @@ class TaskDetailView(FormMixin, DetailView):
         initial['assigned_to'] = self.object.assigned_to
         return initial
 
-    def get_form(self, form_class=None):
-        if form_class == self.form_classA:
-            return self.form_classA(instance=self.object, **self.get_form_kwargs())
-        elif form_class == self.form_classB:
-            return self.form_classB(instance=self.object, **self.get_form_kwargs())
-        elif form_class is None:
-            # Formulario predeterminado
-            return self.form_classA(instance=self.object, **self.get_form_kwargs())
-        else:
-            return super().get_form(form_class=form_class)
-
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
         form = self.get_form()
@@ -408,34 +391,29 @@ class TaskDetailView(FormMixin, DetailView):
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
-        formA = self.get_form(self.form_classA)
-        formB = self.get_form(self.form_classB)
-        if formA.is_valid() and formB.is_valid():
-            return self.form_valid(formA, formB)
+        form = self.get_form()
+        if form.is_valid():
+            return self.form_valid(form)
         else:
-            return self.form_invalid(formA, formB)
+            return self.form_invalid(form)
 
-    def form_valid(self, formA, formB):
+    def form_valid(self, form):
+        # Procesa los datos del formulario y realiza las acciones necesarias
         task = self.object
-
-        new_status = formA.cleaned_data.get("status")
+        new_status = form.cleaned_data.get("status")
         status_instance = Status.objects.get(name=new_status)
         task.status = status_instance
 
-        new_assigned_to = formA.cleaned_data.get("assigned_to")
+        new_assigned_to = form.cleaned_data.get("assigned_to")
         user_instance = User.objects.get(username=new_assigned_to)
         task.assigned_to = user_instance
 
-        formA.save()
-        formB.save()
+        task.save()
 
+        # Redirige al detalle de la tarea
         messages.success(self.request, "Estado y Encargado actualizados.")
         return HttpResponseRedirect(self.request.path_info)
 
-    def form_invalid(self, formA, formB):
-        return self.render_to_response(
-            self.get_context_data(formA=formA, formB=formB)
-        )
 
 @login_required
 def delete_task(request, task_id):
@@ -451,13 +429,17 @@ def delete_task(request, task_id):
 def upload_file(request):
     if request.method == 'POST':
         form = AttachmentForm(request.POST, request.FILES)
+
         if form.is_valid():
-            new_file = Attachment(file = request.FILES['file'])
+            task = form.cleaned_data.get("task")
+            file = form.cleaned_data.get("file")
+
+            new_file = Attachment(file=file, task=task, user=request.user)
             new_file.save()
- 
-            return HttpResponseRedirect(reverse('task:task_detail'))
+
+            return HttpResponseRedirect(reverse('task:task_detail', args=(task.id, )))
     else:
         form = AttachmentForm()
- 
+
     data = {'form': form}
     return render('task/task-detail.html', data, context_instance=RequestContext(request))

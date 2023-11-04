@@ -88,16 +88,16 @@
               {% csrf_token %}
               <div class="c-field u-mb-small">
                 <label class="c-field__label">Estado</label>
-                {{ status_form.status }}
-                {% for error in status_form.status.errors %}
+                {{ form.status }}
+                {% for error in form.status.errors %}
                   <small class="c-field__message u-color-danger"><i class="fa fa-times-circle"></i>{{ error }}</small>
                 {% endfor %}
               </div>
 
               <div class="c-field u-mb-small">
                 <label class="c-field__label">Encargado</label>
-                {{ status_form.assigned_to }}
-                {% for error in status_form.assigned_to.errors %}
+                {{ form.assigned_to }}
+                {% for error in form.assigned_to.errors %}
                   <small class="c-field__message u-color-danger"><i class="fa fa-times-circle"></i>{{ error }}</small>
                 {% endfor %}
               </div>
@@ -108,12 +108,20 @@
 
         <div class="c-card u-p-medium">
           <h5 class="u-h6 u-mb-medium">Subir archivos</h5>
-          <form class="dropzone" action="{% url "task:upload_file" %}" method="post" enctype="multipart/form-data">
+          <form class="dropzone" action="{% url 'task:upload_file' %}" method="post" enctype="multipart/form-data">
             {% csrf_token %}
+            <input type="hidden" name="task" value="{{ task.id }}" />
+            <div class="dz-message" data-dz-message>
+              <i class="dz-icon fa fa-cloud-upload"></i>
+              <span>Arrastre un archivo aquí o busque un archivo para cargar.</span>
+            </div>
+
+            <div class="fallback">
+              <input name="file" type="file" multiple />
+            </div>
           </form>
-          <button id="submit-all">
-              Submit all files
-          </button>
+          <div id="message"></div>
+          <button class="c-btn c-btn--info c-btn--fullwidth u-mt-small" id="submit-all">Enviar todos los archivos</button>
         </div>
       </div>
     </div>

@@ -66,4 +66,4 @@ class TaskStatusAssignedToForm(ModelForm):
 class AttachmentForm(ModelForm):
     class Meta:
         model = Attachment
-        fields = ["file"]
+        fields = ["file", "task"]

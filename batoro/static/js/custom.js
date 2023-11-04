@@ -137,15 +137,34 @@ function showAlertTask(status_id, status_name) {
     })
 }
 
-Dropzone.options.customDropzone = {
-    paramName: "imagen", // el nombre de nuestro input
-    autoProcessQueue : true,
-    parallelUploads: 1,
+if ($('.dropzone').length) {
+    $(".dropzone").dropzone({
 
-    init: function() {
-        this.on("success", function(file, responseText) {
-            // evento lanzado al terminar de subir las imágenes en cola
-            console.log(responseText);
-        });
-    }
-};
+        // Prevents Dropzone from uploading dropped files immediately
+        autoProcessQueue: false,
+        addRemoveLinks: true,
+
+        init: function () {
+            var submitButton = document.querySelector("#submit-all")
+            var message = document.querySelector("#message"); // Elemento HTML donde mostrar el mensaje
+            myDropzone = this;
+
+            submitButton.addEventListener("click", function () {
+                myDropzone.processQueue();
+                // Tell Dropzone to process all queued files.
+            });
+
+            // You might want to show the submit button only when
+            // files are dropped here:
+            this.on("addedfile", function () {
+                // Show submit button here and/or inform user to click it.
+            });
+
+            // Evento cuando se completa el proceso de subida de los archivos
+            this.on("success", function (file, response) {
+                message.innerHTML = "Archivos subidos correctamente";
+            });
+
+        }
+    });
+}
