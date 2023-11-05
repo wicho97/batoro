@@ -141,32 +141,60 @@ function showAlertTask(status_id, status_name) {
 if ($('.dropzone').length) {
     $(".dropzone").dropzone({
 
-        // Prevents Dropzone from uploading dropped files immediately
-        method: "post",
         autoProcessQueue: false,
         addRemoveLinks: true,
+        maxFiles: 2,
 
         init: function () {
             var submitButton = document.querySelector("#submit-all")
+            var numFilesUploaded = 0;
             myDropzone = this;
 
             submitButton.addEventListener("click", function () {
                 myDropzone.processQueue();
-                // Tell Dropzone to process all queued files.
             });
 
-            // You might want to show the submit button only when
-            // files are dropped here:
-            this.on("addedfile", function () {
-                // Show submit button here and/or inform user to click it.
+            this.on("addedfile", function (file) {
+                if (myDropzone.files.length > myDropzone.options.maxFiles) {
+                    myDropzone.removeFile(file);
+                }
             });
 
-            // Evento cuando se completa el proceso de subida de los archivos
             this.on("success", function (file, response) {
                 var task_id = document.querySelector("#task_id").value;
-                window.location.href = "/tasks/attachment/" + task_id + "/";
+                numFilesUploaded++;
+                if (numFilesUploaded === myDropzone.files.length) {
+                    window.location.href = "/tasks/attachment/" + task_id + "/";
+                }
             });
 
         }
     });
 }
+
+
+$(document).ready(function () {
+    $('.btn-download').click(function (e) {
+        e.preventDefault();
+        var url = $(this).attr('href');
+        window.location.href = url;
+    });
+
+    $('.btn-delete').click(function () {
+        var $btn = $(this);  // Almacenar referencia al botón
+        var attachmentId = $(this).data('attachment-id');
+        $.ajax({
+            url: '/tasks/attachment/delete/' + attachmentId + '/',
+            type: 'POST',
+            data: {
+                'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val()
+            },
+            success: function (response) {
+                if (response.success) {
+                    // Eliminar la fila de la tabla correspondiente al archivo eliminado
+                    $btn.closest('tr').remove();  // Usar la referencia almacenada
+                }
+            }
+        });
+    });
+});

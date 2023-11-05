@@ -454,14 +454,17 @@ def task_upload_attachment(request, task_id):
 @login_required
 def task_download_attachment(request, attachment_id):
     attachment = Attachment.objects.get(pk=attachment_id)
-    # this line gets the filename only ('example.jpg')
     filename = attachment.file.name.split('/')[4]
     response = HttpResponse()
-    # Let NGINX handle it
-    # it's inefficient to let django backend handle file downloads
     response.content = attachment.file.read()
     response["Content-Disposition"] = "attachment; filename={0}".format(
         filename)
-    # I could'n make this next line work to serve files using nginx
-    # response["X-Accel-Redirect"] = "/attachments/{0}".format(filename)
     return response
+
+
+@login_required
+def task_delete_attachment(request, attachment_id):
+    attachment = Attachment.objects.get(pk=attachment_id)
+    attachment.file.delete() # Eliminar el archivo
+    attachment.delete() # Eliminar la instancia del Attachment
+    return JsonResponse({'success': True})

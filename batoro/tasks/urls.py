@@ -19,6 +19,7 @@ from .views import (
     delete_task,
     task_upload_attachment,
     task_download_attachment,
+    task_delete_attachment,
 )
 
 
@@ -73,5 +74,6 @@ urlpatterns = [
     path(route="detail/<int:pk>/", view=TaskDetailView.as_view(), name="task_detail"),
     path(route="delete/<int:task_id>/", view=delete_task, name="task_delete"),
     path(route="attachment/<int:task_id>/", view=task_upload_attachment, name="task_upload_file"),
-    path(route="attachment/download/<int:attachment_id>/", view=task_download_attachment, name="task_download_attachment")
+    path(route="attachment/download/<int:attachment_id>/", view=task_download_attachment, name="task_download_attachment"),
+    path(route="attachment/delete/<int:attachment_id>/", view=task_delete_attachment, name="task_delete_attachment"),
 ]
