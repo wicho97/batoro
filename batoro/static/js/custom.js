@@ -137,16 +137,17 @@ function showAlertTask(status_id, status_name) {
     })
 }
 
+
 if ($('.dropzone').length) {
     $(".dropzone").dropzone({
 
         // Prevents Dropzone from uploading dropped files immediately
+        method: "post",
         autoProcessQueue: false,
         addRemoveLinks: true,
 
         init: function () {
             var submitButton = document.querySelector("#submit-all")
-            var message = document.querySelector("#message"); // Elemento HTML donde mostrar el mensaje
             myDropzone = this;
 
             submitButton.addEventListener("click", function () {
@@ -162,7 +163,8 @@ if ($('.dropzone').length) {
 
             // Evento cuando se completa el proceso de subida de los archivos
             this.on("success", function (file, response) {
-                message.innerHTML = "Archivos subidos correctamente";
+                var task_id = document.querySelector("#task_id").value;
+                window.location.href = "/tasks/upload-file/" + task_id + "/";
             });
 
         }

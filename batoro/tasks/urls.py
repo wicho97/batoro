@@ -71,5 +71,5 @@ urlpatterns = [
     path(route="update/<int:pk>/", view=TaskUpdateView.as_view(), name="task_update"),
     path(route="detail/<int:pk>/", view=TaskDetailView.as_view(), name="task_detail"),
     path(route="delete/<int:task_id>/", view=delete_task, name="task_delete"),
-    path(route="upload-file/", view=upload_file, name='upload_file'),
+    path(route="upload-file/<int:task_id>/", view=upload_file, name='upload_file'),
 ]

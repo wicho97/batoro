@@ -73,6 +73,19 @@
                   <span class="c-badge c-badge--small" style="background-color: {{ task.type.color }};">{{ task.type }}</span>
                 </p>
               </div>
+              {% if attachments %}
+              <div class="row u-mb-medium">
+                <div class="col-md-6 col-lg-4">
+                    <ul>
+                      {% for file in attachments %}
+                        <li class="u-mb-xsmall u-text-small u-color-primary">
+                            <i class="fa fa-file-image-o u-text-mute u-mr-xsmall"></i>{{file}}
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+              </div>
+              {% endif %}
             </div>
           </div>
           <!-- // .c-stage__panel -->
@@ -108,9 +121,9 @@
 
         <div class="c-card u-p-medium">
           <h5 class="u-h6 u-mb-medium">Subir archivos</h5>
-          <form class="dropzone" action="{% url 'task:upload_file' %}" method="post" enctype="multipart/form-data">
+          <form class="dropzone" action="{% url 'task:upload_file' task.id %}" method="post" enctype="multipart/form-data">
             {% csrf_token %}
-            <input type="hidden" name="task" value="{{ task.id }}" />
+            <input type="hidden" name="task" value="{{ task.id }}" id="task_id" />
             <div class="dz-message" data-dz-message>
               <i class="dz-icon fa fa-cloud-upload"></i>
               <span>Arrastre un archivo aquí o busque un archivo para cargar.</span>

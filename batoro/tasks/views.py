@@ -368,6 +368,9 @@ class TaskDetailView(FormMixin, DetailView):
         # Add profile photo
         task = self.get_object()
 
+        attachments = Attachment.objects.filter(task=task.id)
+        context['attachments'] = attachments
+
         if task.assigned_to:
             profile = task.assigned_to.profile
             if profile:
@@ -426,7 +429,9 @@ def delete_task(request, task_id):
     return HttpResponseRedirect(reverse_lazy("task:task_list"))
 
 
-def upload_file(request):
+@login_required
+def upload_file(request, task_id):
+    task = Task.objects.get(id=task_id)
     if request.method == 'POST':
         form = AttachmentForm(request.POST, request.FILES)
 
@@ -438,8 +443,9 @@ def upload_file(request):
             new_file.save()
 
             return HttpResponseRedirect(reverse('task:task_detail', args=(task.id, )))
-    else:
-        form = AttachmentForm()
+        else:
+            messages.error(request, f"No se pudo subir los archivos.")
+            return HttpResponseRedirect(reverse('task:task_detail', args=(task.id, )))
 
-    data = {'form': form}
-    return render('task/task-detail.html', data, context_instance=RequestContext(request))
+    messages.success(request, f"Los archivos se subieron exitosamente.")
+    return HttpResponseRedirect(reverse('task:task_detail', args=(task.id,)))

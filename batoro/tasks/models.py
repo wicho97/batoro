@@ -67,7 +67,7 @@ class Task(TimestampMixin, models.Model):
     estimated_time = models.FloatField(default=0)
 
     def __str__(self):
-        return self.subject
+        return self.id, self.subject
 
 
 class Comentary(TimestampMixin, models.Model):
@@ -93,4 +93,5 @@ class Attachment(TimestampMixin, models.Model):
     )
 
     def __str__(self):
-        return self.file
+        return self.file.name.split('/')[4] #returns file handle name
+
