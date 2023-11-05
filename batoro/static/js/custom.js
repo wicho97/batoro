@@ -164,7 +164,7 @@ if ($('.dropzone').length) {
             // Evento cuando se completa el proceso de subida de los archivos
             this.on("success", function (file, response) {
                 var task_id = document.querySelector("#task_id").value;
-                window.location.href = "/tasks/upload-file/" + task_id + "/";
+                window.location.href = "/tasks/attachment/" + task_id + "/";
             });
 
         }
