@@ -27,7 +27,7 @@
             </div>
           </div>
 
-          <div class="c-stage__panel u-p-medium">
+          <div class="u-p-medium">
             {% if task.description %}
               <p class="u-text-mute u-text-uppercase u-text-small u-mb-xsmall u-border-bottom">Descripción</p>
               <p class="u-mb-medium">{{ task.description }}</p>
@@ -74,35 +74,36 @@
                 </p>
               </div>
             </div>
-            {% if attachments %}
-              <div class="c-card c-card--responsive u-mb-medium">
-                <div class="c-card__header c-card__header--transparent o-line">
-                  <h5 class="c-card__title">Archivos</h5>
-                </div>
-
-                <table class="c-table u-border-zero">
-                  <tbody>
-                    {% for file in attachments %}
-                      <tr class="c-table__row u-border-top-zero">
-                        <td class="c-table__cell">
-                            <span class="u-text-bold">{{ file }}</span>
-                        </td>
-                        <td class="c-table__cell u-text-right">
-                          <div class="c-btn-group">
-                            <a class="c-btn c-btn--success btn-download" href="{% url 'task:task_download_attachment' file.id %}"><i class="fa fa-cloud-download u-mr-xsmall"></i>Descargar</a>
-                            <button class="c-btn c-btn--success btn-delete" href="#!" data-attachment-id="{{ file.id }}"><i class="fa fa-trash-o u-mr-xsmall"></i>Eliminar</button>
-                          </div>
-                        </td>
-                      </tr>
-                    {% endfor %}
-                  </tbody>
-                </table>
-              </div>
-            {% endif %}
           </div>
-          <!-- // .c-stage__panel -->
         </article>
-        <!-- // .c-stage -->
+        
+        <article class="c-stage">
+        {% if attachments %}
+          <div class="c-card--responsive">
+            <div class="c-card__header c-card__header--transparent o-line">
+              <h5 class="c-card__title">Archivos</h5>
+            </div>
+
+            <table class="c-table u-border-zero">
+              <tbody>
+                {% for file in attachments %}
+                  <tr class="c-table__row u-border-top-zero">
+                    <td class="c-table__cell">
+                        <span class="u-text-bold">{{ file }}</span>
+                    </td>
+                    <td class="c-table__cell u-text-right">
+                      <div class="c-btn-group">
+                        <a class="c-btn c-btn--success btn-download" href="{% url 'task:task_download_attachment' file.id %}"><i class="fa fa-cloud-download u-mr-xsmall"></i>Descargar</a>
+                        <button class="c-btn c-btn--success btn-delete" href="#!" data-attachment-id="{{ file.id }}"><i class="fa fa-trash-o u-mr-xsmall"></i>Eliminar</button>
+                      </div>
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        {% endif %}
+        </article>
       </div>
 
       <div class="col-xl-3">
@@ -130,7 +131,7 @@
             </form>
           </div>
         </div>
-        <div class="c-card u-p-medium">
+        <div class="c-card u-p-medium u-mb-medium">
           <h5 class="u-h6 u-mb-medium">Subir archivos</h5>
           <form class="dropzone" action="{% url 'task:task_upload_file' task.id %}" method="post" enctype="multipart/form-data">
             {% csrf_token %}
@@ -150,7 +151,6 @@
         </div>
       </div>
       <div class="col-xl-3">
-        <h1>Bitacora</h1>
       </div>
   </div>
   <!-- // .container -->
