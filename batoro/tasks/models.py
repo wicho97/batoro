@@ -1,3 +1,6 @@
+import datetime
+
+
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -64,7 +67,7 @@ class Task(TimestampMixin, models.Model):
     project = models.ForeignKey(Project, on_delete=models.SET_NULL, null=True)
     start_date = models.DateField(blank=True, null=True)
     finish_date = models.DateField(blank=True, null=True)
-    estimated_time = models.FloatField(default=0)
+    estimated_time = models.DecimalField(max_digits=5, decimal_places=2)
 
     def __str__(self):
         return self.subject
@@ -93,5 +96,4 @@ class Attachment(TimestampMixin, models.Model):
     )
 
     def __str__(self):
-        return self.file.name.split('/')[4] #returns file handle name
-
+        return self.file.name.split("/")[4]

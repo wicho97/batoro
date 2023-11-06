@@ -1,4 +1,4 @@
-{% extends 'base_2.html' %} {% block title %}
+{% extends 'base_3.html' %} {% block title %}
   Tarea - Detalle de la Tarea
 {% endblock %} {% block content %}
   <div class="c-toolbar u-mb-medium">
@@ -35,6 +35,9 @@
 
             <p class="u-text-mute u-text-uppercase u-text-small u-mb-xsmall u-border-bottom">Proyecto</p>
             <p class="u-mb-medium">{{ task.project }}</p>
+
+            <p class="u-text-mute u-text-uppercase u-text-small u-mb-xsmall u-border-bottom">Horas trabajadas</p>
+            <p class="u-mb-medium">{{ task.estimated_time }}</p>
 
             {% if task.assigned_to %}
               <p class="u-text-mute u-text-uppercase u-text-small u-mb-xsmall u-border-bottom">Encargado</p>

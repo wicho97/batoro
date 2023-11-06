@@ -1,4 +1,3 @@
-from django.shortcuts import redirect
 from django.views.generic import (
     ListView,
     CreateView,
@@ -15,16 +14,18 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.views.generic.edit import FormMixin
-from django.views import View
 from django.http import JsonResponse, HttpResponse
 
-
-from django.template import RequestContext
-from django.shortcuts import render
-
-
 from .models import Status, Priority, Type, Task, Attachment, Comentary
-from .forms import StatusForm, PriorityForm, TypeForm, TaskForm, TaskStatusAssignedToForm, AttachmentForm, CommentForm
+from .forms import (
+    StatusForm,
+    PriorityForm,
+    TypeForm,
+    TaskForm,
+    TaskStatusAssignedToForm,
+    AttachmentForm,
+    CommentForm,
+)
 
 # Create your views here.
 
@@ -99,8 +100,7 @@ def delete_task_status(request, task_status_id):
     status = Status.objects.get(id=task_status_id)
     status_name = status.name
     status.delete()
-    messages.success(
-        request, f"El estado '{status_name}' se ha borrado exitosamente.")
+    messages.success(request, f"El estado '{status_name}' se ha borrado exitosamente.")
     return HttpResponseRedirect(reverse_lazy("task:status_list"))
 
 
@@ -174,8 +174,7 @@ def delete_task_priority(request, task_priority_id):
     status = Priority.objects.get(id=task_priority_id)
     status_name = status.name
     status.delete()
-    messages.success(
-        request, f"El estado '{status_name}' se ha borrado exitosamente.")
+    messages.success(request, f"El estado '{status_name}' se ha borrado exitosamente.")
     return HttpResponseRedirect(reverse_lazy("task:priority_list"))
 
 
@@ -249,8 +248,7 @@ def delete_task_type(request, task_type_id):
     status = Type.objects.get(id=task_type_id)
     status_name = status.name
     status.delete()
-    messages.success(
-        request, f"El estado '{status_name}' se ha borrado exitosamente.")
+    messages.success(request, f"El estado '{status_name}' se ha borrado exitosamente.")
     return HttpResponseRedirect(reverse_lazy("task:type_list"))
 
 
@@ -274,15 +272,14 @@ class TaskListView(ListView):
             queryset = queryset.filter(subject__icontains=search)
         elif status and priority and type:
             queryset = queryset.filter(
-                status__name=status, priority__name=priority, type__name=type)
+                status__name=status, priority__name=priority, type__name=type
+            )
         elif status and priority:
-            queryset = queryset.filter(
-                status__name=status, priority__name=priority)
+            queryset = queryset.filter(status__name=status, priority__name=priority)
         elif status and type:
             queryset = queryset.filter(status__name=status, type__name=type)
         elif priority and type:
-            queryset = queryset.filter(
-                priority__name=priority, type__name=type)
+            queryset = queryset.filter(priority__name=priority, type__name=type)
         elif status:
             queryset = queryset.filter(status__name=status)
         elif priority:
@@ -368,11 +365,10 @@ class TaskDetailView(FormMixin, DetailView):
         task = self.get_object()
 
         attachments = Attachment.objects.filter(task=task.id)
-        context['attachments'] = attachments
+        context["attachments"] = attachments
 
-        comments = Comentary.objects.filter(
-            task=task.id).order_by('-created_at')
-        context['comments'] = comments
+        comments = Comentary.objects.filter(task=task.id).order_by("-created_at")
+        context["comments"] = comments
 
         if task.assigned_to:
             profile = task.assigned_to.profile
@@ -383,8 +379,8 @@ class TaskDetailView(FormMixin, DetailView):
 
     def get_initial(self):
         initial = super().get_initial()
-        initial['status'] = self.object.status
-        initial['assigned_to'] = self.object.assigned_to
+        initial["status"] = self.object.status
+        initial["assigned_to"] = self.object.assigned_to
         return initial
 
     def get(self, request, *args, **kwargs):
@@ -422,16 +418,14 @@ def delete_task(request, task_id):
     task = Task.objects.get(id=task_id)
     task_subject = task.subject
     task.delete()
-    messages.success(
-        request, f"La tarea '{task_subject}' se ha borrado exitosamente."
-    )
+    messages.success(request, f"La tarea '{task_subject}' se ha borrado exitosamente.")
     return HttpResponseRedirect(reverse_lazy("task:task_list"))
 
 
 @login_required
 def task_upload_attachment(request, task_id):
     task = Task.objects.get(id=task_id)
-    if request.method == 'POST':
+    if request.method == "POST":
         form = AttachmentForm(request.POST, request.FILES)
 
         if form.is_valid():
@@ -441,23 +435,22 @@ def task_upload_attachment(request, task_id):
             new_file = Attachment(file=file, task=task, user=request.user)
             new_file.save()
 
-            return HttpResponseRedirect(reverse('task:task_detail', args=(task.id, )))
+            return HttpResponseRedirect(reverse("task:task_detail", args=(task.id,)))
         else:
             messages.error(request, f"No se pudo subir los archivos.")
-            return HttpResponseRedirect(reverse('task:task_detail', args=(task.id, )))
+            return HttpResponseRedirect(reverse("task:task_detail", args=(task.id,)))
 
     messages.success(request, f"Los archivos se subieron exitosamente.")
-    return HttpResponseRedirect(reverse('task:task_detail', args=(task.id,)))
+    return HttpResponseRedirect(reverse("task:task_detail", args=(task.id,)))
 
 
 @login_required
 def task_download_attachment(request, attachment_id):
     attachment = Attachment.objects.get(pk=attachment_id)
-    filename = attachment.file.name.split('/')[4]
+    filename = attachment.file.name.split("/")[4]
     response = HttpResponse()
     response.content = attachment.file.read()
-    response["Content-Disposition"] = "attachment; filename={0}".format(
-        filename)
+    response["Content-Disposition"] = "attachment; filename={0}".format(filename)
     return response
 
 
@@ -466,28 +459,20 @@ def task_delete_attachment(request, attachment_id):
     attachment = Attachment.objects.get(pk=attachment_id)
     attachment.file.delete()
     attachment.delete()
-    return JsonResponse({'success': True})
+    return JsonResponse({"success": True})
 
 
 @login_required
 def task_create_comment(request, task_id):
     task = Task.objects.get(id=task_id)
-    print(20*'=')
-    print("ENTRA ALA FUNCION")
-    print(20*'=')
-    if request.method == 'POST':
-        print(20*'=')
-        print("ENTRA AL POST")
-        print(20*'=')
+
+    if request.method == "POST":
         form = CommentForm(request.POST)
         if form.is_valid():
             comment = form.save(commit=False)
             comment.task = task
             comment.user = request.user
             comment.save()
-            print(20*'=')
-            print("SE GRABA")
-            print(20*'=')
-            return HttpResponseRedirect(reverse('task:task_detail', args=(task.id, )))
+            return HttpResponseRedirect(reverse("task:task_detail", args=(task.id,)))
 
-    return HttpResponseRedirect(reverse('task:task_detail', args=(task.id,)))
+    return HttpResponseRedirect(reverse("task:task_detail", args=(task.id,)))
