@@ -54,7 +54,7 @@ class TaskForm(ModelForm):
 class TaskStatusAssignedToForm(ModelForm):
     class Meta:
         model = Task
-        fields = ["status", "assigned_to"]
+        fields = ["status", "assigned_to", "estimated_time"]
 
     def __init__(self, *args, **kwargs):
         super(TaskStatusAssignedToForm, self).__init__(*args, **kwargs)
