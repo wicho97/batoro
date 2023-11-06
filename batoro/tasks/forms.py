@@ -1,6 +1,6 @@
 from django.forms import ModelForm
 
-from .models import Status, Priority, Type, Task, Attachment
+from .models import Status, Priority, Type, Task, Attachment, Comentary
 
 
 class StatusForm(ModelForm):
@@ -67,3 +67,8 @@ class AttachmentForm(ModelForm):
     class Meta:
         model = Attachment
         fields = ["file", "task"]
+
+class CommentForm(ModelForm):
+    class Meta:
+        model = Comentary
+        fields = ["content"]

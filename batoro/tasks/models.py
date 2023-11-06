@@ -67,7 +67,7 @@ class Task(TimestampMixin, models.Model):
     estimated_time = models.FloatField(default=0)
 
     def __str__(self):
-        return self.id, self.subject
+        return self.subject
 
 
 class Comentary(TimestampMixin, models.Model):
@@ -80,7 +80,7 @@ class Comentary(TimestampMixin, models.Model):
     content = models.TextField()
 
     def __str__(self):
-        return self.user + ": " + self.task
+        return self.content
 
 
 class Attachment(TimestampMixin, models.Model):

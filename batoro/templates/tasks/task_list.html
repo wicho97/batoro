@@ -73,6 +73,7 @@
               <tr class="c-table__row">
                 <th class="c-table__cell c-table__cell--head">#</th>
                 <th class="c-table__cell c-table__cell--head">Asunto</th>
+                <th class="c-table__cell c-table__cell--head">Proyecto</th>
                 <th class="c-table__cell c-table__cell--head">Estado</th>
                 <th class="c-table__cell c-table__cell--head">Prioridad</th>
                 <th class="c-table__cell c-table__cell--head">Tipo</th>
@@ -92,6 +93,11 @@
                     <span class="u-text-mute">{{ task.id }}</span>
                   </td>
                   <td class="c-table__cell">{{ task.subject }}</td>
+                  <td class="c-table__cell">
+                    {% if task.project %}
+                      {{ task.project }}
+                    {% endif %}
+                  </td>
                   <td class="c-table__cell">
                     <span class="c-badge c-badge--small" style="background-color: {{ task.status.color }};">{{ task.status }}</span>
                   </td>

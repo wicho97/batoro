@@ -23,8 +23,8 @@ from django.template import RequestContext
 from django.shortcuts import render
 
 
-from .models import Status, Priority, Type, Task, Attachment
-from .forms import StatusForm, PriorityForm, TypeForm, TaskForm, TaskStatusAssignedToForm, AttachmentForm
+from .models import Status, Priority, Type, Task, Attachment, Comentary
+from .forms import StatusForm, PriorityForm, TypeForm, TaskForm, TaskStatusAssignedToForm, AttachmentForm, CommentForm
 
 # Create your views here.
 
@@ -365,11 +365,14 @@ class TaskDetailView(FormMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        # Add profile photo
         task = self.get_object()
 
         attachments = Attachment.objects.filter(task=task.id)
         context['attachments'] = attachments
+
+        comments = Comentary.objects.filter(
+            task=task.id).order_by('-created_at')
+        context['comments'] = comments
 
         if task.assigned_to:
             profile = task.assigned_to.profile
@@ -380,8 +383,6 @@ class TaskDetailView(FormMixin, DetailView):
 
     def get_initial(self):
         initial = super().get_initial()
-        # Aquí puedes asignar los valores iniciales a los campos del formulario,
-        # por ejemplo, puedes obtener los valores de tu modelo y asignarlos así:
         initial['status'] = self.object.status
         initial['assigned_to'] = self.object.assigned_to
         return initial
@@ -401,7 +402,6 @@ class TaskDetailView(FormMixin, DetailView):
             return self.form_invalid(form)
 
     def form_valid(self, form):
-        # Procesa los datos del formulario y realiza las acciones necesarias
         task = self.object
         new_status = form.cleaned_data.get("status")
         status_instance = Status.objects.get(name=new_status)
@@ -413,7 +413,6 @@ class TaskDetailView(FormMixin, DetailView):
 
         task.save()
 
-        # Redirige al detalle de la tarea
         messages.success(self.request, "Estado y Encargado actualizados.")
         return HttpResponseRedirect(self.request.path_info)
 
@@ -465,6 +464,30 @@ def task_download_attachment(request, attachment_id):
 @login_required
 def task_delete_attachment(request, attachment_id):
     attachment = Attachment.objects.get(pk=attachment_id)
-    attachment.file.delete() # Eliminar el archivo
-    attachment.delete() # Eliminar la instancia del Attachment
+    attachment.file.delete()
+    attachment.delete()
     return JsonResponse({'success': True})
+
+
+@login_required
+def task_create_comment(request, task_id):
+    task = Task.objects.get(id=task_id)
+    print(20*'=')
+    print("ENTRA ALA FUNCION")
+    print(20*'=')
+    if request.method == 'POST':
+        print(20*'=')
+        print("ENTRA AL POST")
+        print(20*'=')
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.task = task
+            comment.user = request.user
+            comment.save()
+            print(20*'=')
+            print("SE GRABA")
+            print(20*'=')
+            return HttpResponseRedirect(reverse('task:task_detail', args=(task.id, )))
+
+    return HttpResponseRedirect(reverse('task:task_detail', args=(task.id,)))
