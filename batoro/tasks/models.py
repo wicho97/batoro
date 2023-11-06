@@ -95,5 +95,8 @@ class Attachment(TimestampMixin, models.Model):
         User, related_name="attachments_user", on_delete=models.CASCADE, null=True
     )
 
+    size = models.PositiveIntegerField()
+    mime_type = models.CharField(max_length=100)
+
     def __str__(self):
         return self.file.name.split("/")[4]

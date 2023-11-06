@@ -432,7 +432,13 @@ def task_upload_attachment(request, task_id):
             task = form.cleaned_data.get("task")
             file = form.cleaned_data.get("file")
 
-            new_file = Attachment(file=file, task=task, user=request.user)
+            new_file = Attachment(
+                file=file,
+                task=task,
+                user=request.user,
+                size=file.size,
+                mime_type=file.content_type,
+            )
             new_file.save()
 
             return HttpResponseRedirect(reverse("task:task_detail", args=(task.id,)))
