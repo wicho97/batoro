@@ -191,8 +191,10 @@ $(document).ready(function () {
             },
             success: function (response) {
                 if (response.success) {
-                    // Eliminar la fila de la tabla correspondiente al archivo eliminado
-                    $btn.closest('tr').remove();  // Usar la referencia almacenada
+                    // Agregar fadeOut antes de eliminar la fila de la tabla correspondiente al archivo eliminado
+                    $btn.closest('li').fadeOut(500, function() {
+                        $(this).remove();  // Usar la referencia almacenada
+                    });
                 }
             }
         });

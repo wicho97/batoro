@@ -381,6 +381,7 @@ class TaskDetailView(FormMixin, DetailView):
         initial = super().get_initial()
         initial["status"] = self.object.status
         initial["assigned_to"] = self.object.assigned_to
+        initial["estimated_time"] = self.object.estimated_time
         return initial
 
     def get(self, request, *args, **kwargs):
@@ -407,9 +408,12 @@ class TaskDetailView(FormMixin, DetailView):
         user_instance = User.objects.get(username=new_assigned_to)
         task.assigned_to = user_instance
 
+        new_estimated_time = form.cleaned_data.get("estimated_time")
+        task.estimated_time = new_estimated_time
+
         task.save()
 
-        messages.success(self.request, "Estado y Encargado actualizados.")
+        messages.success(self.request, "Datos actualizados.")
         return HttpResponseRedirect(self.request.path_info)
 
 

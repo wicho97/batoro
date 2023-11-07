@@ -4,6 +4,20 @@
   <div class="c-toolbar u-mb-medium">
     <a class="c-btn c-btn--info u-mr-auto" href="{% url 'task:task_list' %}">Volver al listado</a>
     <nav class="c-counter-nav">
+      <p class="c-counter-nav__title">Encargado:</p>
+      <div class="c-counter-nav__item">
+        {% if profile_photo %}
+        <span class="c-badge c-badge--info c-tooltip c-tooltip--bottom" aria-label="{{ task.assigned_to }}" style="background: transparent; border: 0;">
+        <div class="o-media__img u-mr-xsmall">
+          <div class="c-avatar c-avatar--xsmall">
+            <img class="c-avatar__img" src="{{ profile_photo.url }}" alt="Profile Title" />
+          </div>
+        </div>
+      </span>
+        {% else %}
+        <span class="c-badge c-badge--small">{{ task.assigned_to }}</span>
+        {% endif %}
+      </div>
       <p class="c-counter-nav__title">Estado:</p>
       <div class="c-counter-nav__item">
         <span class="c-badge c-badge--small" style="background-color: {{ task.status.color }};">{{ task.status }}</span>
@@ -67,7 +81,7 @@
           </div><!-- // .c-stage__panel -->
 
           <a class="c-stage__header u-flex u-justify-between" data-toggle="collapse" href="#stage-panel2" aria-expanded="false" aria-controls="stage-panel2">
-              <h6 class="u-text-mute u-text-uppercase u-text-small u-mb-zero">Archivos ({{ attachments | length }})</h6>
+              <h6 class="u-text-mute u-text-uppercase u-text-small u-mb-zero">Archivo{{ record_count|pluralize }} ({{ attachments | length }})</h6>
 
               <i class="fa fa-angle-down u-text-mute"></i>
           </a>
@@ -80,8 +94,8 @@
                 <li class="u-mb-xsmall u-text-small u-color-primary">
                   <i class="fa fa-file-image-o u-text-mute u-mr-xsmall"></i>{{ file }}
                   <div class="u-float-right">
-                    <a class="u-text-mute u-text-small" href="{% url 'task:task_download_attachment' file.id %}"><i class="fa fa-cloud-download u-mr-xsmall"></i></a>
-                    <button class="u-text-mute u-text-small btn-delete" data-attachment-id="{{ file.id }}" style="background: transparent; border: 0;"><i class="fa fa-trash-o"></i></a>
+                    <a class="u-text-mute u-text-smal btn-download" href="{% url 'task:task_download_attachment' file.id %}">{{ file.size | filesizeformat }} <i class="fa fa-cloud-download u-mr-xsmall"></i></a>
+                    <button class="u-text-mute u-text-small btn-delete btn-delete" data-attachment-id="{{ file.id }}" style="background: transparent; border: 0;"><i class="fa fa-trash-o"></i></a>
                   </div>
                 </li>
                 {% endfor %}
