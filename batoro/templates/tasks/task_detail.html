@@ -8,14 +8,14 @@
       <div class="c-counter-nav__item">
         {% if profile_photo %}
         <span class="c-badge c-badge--info c-tooltip c-tooltip--bottom" aria-label="{{ task.assigned_to }}" style="background: transparent; border: 0;">
-        <div class="o-media__img u-mr-xsmall">
-          <div class="c-avatar c-avatar--xsmall">
-            <img class="c-avatar__img" src="{{ profile_photo.url }}" alt="Profile Title" />
+          <div class="o-media__img u-mr-xsmall">
+            <div class="c-avatar c-avatar--xsmall">
+              <img class="c-avatar__img" src="{{ profile_photo.url }}" alt="Profile Title" />
+            </div>
           </div>
-        </div>
-      </span>
+        </span>
         {% else %}
-        <span class="c-badge c-badge--small">{{ task.assigned_to }}</span>
+        <p>{{ task.assigned_to }}</p>
         {% endif %}
       </div>
       <p class="c-counter-nav__title">Estado:</p>

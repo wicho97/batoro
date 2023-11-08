@@ -7,7 +7,7 @@
     <h4 class="c-sidebar__title">Dashboards</h4>
     <ul class="c-sidebar__list">
       <li class="c-sidebar__item">
-        <a class="c-sidebar__link {% if section == 'dashboard' %}{% endif %}" href="{% url 'dashboard' %}"><i class="fa fa-table u-mr-xsmall"></i>Projects</a>
+        <a class="c-sidebar__link {% if section == 'dashboard' %} is-active {% endif %}" href="{% url 'dashboard' %}"><i class="fa fa-table u-mr-xsmall"></i>Projects</a>
       </li>
     </ul>
 
@@ -91,7 +91,7 @@
     <h4 class="c-sidebar__title">Cuenta</h4>
     <ul class="c-sidebar__list">
       <li class="c-sidebar__item">
-        <a class="c-sidebar__link {% if section == 'account_settings' %}{% endif %}" href="{% url 'edit' %}"><i class="fa fa-cog u-mr-xsmall"></i>Ajustes</a>
+        <a class="c-sidebar__link {% if section == 'account_settings' %} is-active {% endif %}" href="{% url 'edit' %}"><i class="fa fa-cog u-mr-xsmall"></i>Ajustes</a>
       </li>
     </ul>
   </div>
