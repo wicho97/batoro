@@ -8,6 +8,9 @@ from django.contrib.auth.models import User
 from projects.models import Project
 
 
+from ckeditor.fields import RichTextField
+
+
 # Create your models here.
 
 
@@ -80,7 +83,7 @@ class Comentary(TimestampMixin, models.Model):
     task = models.ForeignKey(
         Task, on_delete=models.SET_NULL, related_name="comentary_task", null=True
     )
-    content = models.TextField()
+    content = RichTextField()
 
     def __str__(self):
         return self.content

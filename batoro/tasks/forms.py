@@ -1,6 +1,10 @@
 from django.forms import ModelForm
 
+
 from .models import Status, Priority, Type, Task, Attachment, Comentary
+
+
+from ckeditor.widgets import CKEditorWidget
 
 
 class StatusForm(ModelForm):
@@ -67,6 +71,7 @@ class AttachmentForm(ModelForm):
     class Meta:
         model = Attachment
         fields = ["file", "task"]
+
 
 class CommentForm(ModelForm):
     class Meta:

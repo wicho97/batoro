@@ -44,6 +44,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # Other apps
+    'ckeditor',
 ]
 
 MIDDLEWARE = [
@@ -153,4 +156,14 @@ MESSAGE_TAGS = {
     messages.SUCCESS: 'c-alert--success',
     messages.WARNING: 'c-alert--warning',
     messages.ERROR: 'c-alert--danger',
+}
+
+
+# CKEditor
+
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'basic',
+        'removePlugins': 'exportpdf',
+    },
 }

@@ -161,7 +161,7 @@
         <div class="c-post">
           <form method="post" action="{% url 'task:task_create_comment' task.id %}">
             {% csrf_token %}
-            <textarea class="c-post__content" name="content" placeholder="Escriba un comentario."></textarea>
+            <textarea class="c-post__content" id="comment-content" name="content" placeholder="Escriba un comentario.">{% if content %}{{ content|safe }}{% endif %}</textarea>
 
             <div class="c-post__toolbar">
                 <button class="c-btn c-btn--success u-float-right" type="submit">Comentar</button>
@@ -188,7 +188,7 @@
                       <span class="c-stream-item__time">{{comment.created_at}}</span>
                   </div>
 
-                  <p class="u-mb-small">{{comment.content}}</p>
+                  <p class="u-mb-small">{{comment.content | safe}}</p>
               </div>
               
           </li>
