@@ -163,7 +163,13 @@ MESSAGE_TAGS = {
 
 CKEDITOR_CONFIGS = {
     'default': {
-        'toolbar': 'basic',
+        'toolbar': 'Custom',
+        'toolbar_Custom': [
+            ['Bold', 'Italic', 'Underline', 'Subscript', 'Superscript'],
+            ['-', 'NumberedList','BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'AlignLeft', 'AlignCenter', 'AlignRight'],
+            ['Link', 'Unlink'],
+            ['Styles', 'Format', 'Font', 'FontSize', 'TextColor', 'BGColor', 'Source']
+        ],
         'removePlugins': 'exportpdf',
     },
 }

@@ -35,12 +35,12 @@
         <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
         <script>
             CKEDITOR.replace('comment-content', {
-                //toolbar: [
-                //{name: 'basicstyles', groups: ['basicstyles', 'cleanup'], items: ['Bold', 'Italic', 'Underline', 'Subscript', 'Superscript']},
-                //{name: 'paragraph', groups: ['list', 'indent', 'blocks', 'align'], items: ['-', 'NumberedList','BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'AlignLeft', 'AlignCenter', 'AlignRight']},
-                //{name: 'links', items: ['Link', 'Unlink']},
-                //{name: 'others', items: ['Styles', 'Format', 'Font', 'FontSize', 'TextColor', 'BGColor', 'Source']}
-             //],
+                toolbar: [
+                {name: 'basicstyles', groups: ['basicstyles', 'cleanup'], items: ['Bold', 'Italic', 'Underline', 'Subscript', 'Superscript']},
+                {name: 'paragraph', groups: ['list', 'indent', 'blocks', 'align'], items: ['-', 'NumberedList','BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'AlignLeft', 'AlignCenter', 'AlignRight']},
+                {name: 'links', items: ['Link', 'Unlink']},
+                {name: 'others', items: ['Styles', 'Format', 'Font', 'FontSize', 'TextColor', 'BGColor', 'Source']}
+             ],
                 removePlugins: 'exportpdf',
             });
         </script>

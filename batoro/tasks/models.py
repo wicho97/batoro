@@ -53,7 +53,7 @@ class Type(CustomModel):
 
 class Task(TimestampMixin, models.Model):
     subject = models.CharField(max_length=100)
-    description = models.TextField(blank=True, null=True)
+    description = RichTextField(blank=True, null=True)
     status = models.ForeignKey(Status, on_delete=models.SET_NULL, null=True)
     priority = models.ForeignKey(Priority, on_delete=models.SET_NULL, null=True)
     type = models.ForeignKey(Type, on_delete=models.SET_NULL, null=True)

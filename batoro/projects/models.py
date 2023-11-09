@@ -2,6 +2,9 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
+from ckeditor.fields import RichTextField
+
+
 # Create your models here.
 
 
@@ -27,7 +30,7 @@ class Status(TimestampMixin, models.Model):
 
 class Project(TimestampMixin, models.Model):
     name = models.CharField(max_length=100)
-    description = models.TextField(blank=True, null=True)
+    description = RichTextField(blank=True, null=True)
     public = models.BooleanField()
     start_date = models.DateField(blank=True, null=True)
     finish_date = models.DateField(blank=True, null=True)

@@ -58,9 +58,9 @@ class StatusListView(ListView):
         context["page_obj"] = page_obj
         context["is_paginated"] = page_obj.has_other_pages()
         previous_index = (
-            page_obj.previous_page_number() - 1 if page_obj.has_previous() else 0
+            page_obj.previous_page_number() if page_obj.has_previous() else 0
         )
-        next_index = page_obj.next_page_number() - 1 if page_obj.has_next() else 0
+        next_index = page_obj.next_page_number() if page_obj.has_next() else 0
         context["previous_index"] = previous_index
         context["next_index"] = next_index
 
@@ -132,9 +132,9 @@ class PriorityListView(ListView):
         context["page_obj"] = page_obj
         context["is_paginated"] = page_obj.has_other_pages()
         previous_index = (
-            page_obj.previous_page_number() - 1 if page_obj.has_previous() else 0
+            page_obj.previous_page_number() if page_obj.has_previous() else 0
         )
-        next_index = page_obj.next_page_number() - 1 if page_obj.has_next() else 0
+        next_index = page_obj.next_page_number() if page_obj.has_next() else 0
         context["previous_index"] = previous_index
         context["next_index"] = next_index
 
@@ -206,9 +206,9 @@ class TypeListView(ListView):
         context["page_obj"] = page_obj
         context["is_paginated"] = page_obj.has_other_pages()
         previous_index = (
-            page_obj.previous_page_number() - 1 if page_obj.has_previous() else 0
+            page_obj.previous_page_number() if page_obj.has_previous() else 0
         )
-        next_index = page_obj.next_page_number() - 1 if page_obj.has_next() else 0
+        next_index = page_obj.next_page_number() if page_obj.has_next() else 0
         context["previous_index"] = previous_index
         context["next_index"] = next_index
 
@@ -301,9 +301,9 @@ class TaskListView(ListView):
         context["page_obj"] = page_obj
         context["is_paginated"] = page_obj.has_other_pages()
         previous_index = (
-            page_obj.previous_page_number() - 1 if page_obj.has_previous() else 0
+            page_obj.previous_page_number() if page_obj.has_previous() else 0
         )
-        next_index = page_obj.next_page_number() - 1 if page_obj.has_next() else 0
+        next_index = page_obj.next_page_number() if page_obj.has_next() else 0
         context["previous_index"] = previous_index
         context["next_index"] = next_index
 
