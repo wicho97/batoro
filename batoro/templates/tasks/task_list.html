@@ -18,6 +18,14 @@
   <div class="c-toolbar u-mb-medium">
     <form class="d-flex" style="width: 100%;" method="get">
       <div class="c-field c-field--inline u-mr-small">
+        <select class="c-select has-search" name="project">
+          <option value="">Elegir proyecto</option>
+          {% for project in projects %}
+          <option value="{{ project.name }}" {% if request.GET.project == project.name %}selected{% endif %}>{{ project.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="c-field c-field--inline u-mr-small">
         <select class="c-select has-search" name="status">
           <option value="">Elegir estado</option>
           {% for status in statuses %}
@@ -43,6 +51,15 @@
       </div>
       <button class="c-btn c-btn--info" type="submit">Filtrar</button>
     </form>
+    <div class="c-dropdown dropdown u-ml-auto">
+      <button class="c-btn c-btn--info has-dropdown dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Exportar</button>
+      
+      <div class="c-dropdown__menu dropdown-menu" aria-labelledby="dropdownMenuButton" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 39px, 0px); top: 0px; left: 0px; will-change: transform;">
+          <a class="c-dropdown__item dropdown-item" href="{% url "task:export_csv" %}?search={{ request.GET.search }}&project={{ request.GET.project }}&status={{ request.GET.status }}&priority={{ request.GET.priority }}&type={{ request.GET.type }}">CSV</a>
+          <a class="c-dropdown__item dropdown-item" href="#">XML</a>
+          <a class="c-dropdown__item dropdown-item" href="#">PDF</a>
+      </div>
+  </div>
   </div>
   <div class="container-fluid u-mt-medium">
     {% if messages %}

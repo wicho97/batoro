@@ -1,3 +1,7 @@
+import csv
+import datetime
+
+
 from django.views.generic import (
     ListView,
     CreateView,
@@ -16,7 +20,8 @@ from django.contrib.auth.models import User
 from django.views.generic.edit import FormMixin
 from django.http import JsonResponse, HttpResponse
 
-from .models import Status, Priority, Type, Task, Attachment, Comentary
+
+from .models import Status, Priority, Type, Task, Attachment, Comentary, Project
 from .forms import (
     StatusForm,
     PriorityForm,
@@ -261,33 +266,37 @@ class TaskListView(ListView):
 
     def get_queryset(self):
         queryset = super().get_queryset()
+
         # Filter by name
         search = self.request.GET.get("search", "")
+
         # Filters
         status = self.request.GET.get("status", "")
         priority = self.request.GET.get("priority", "")
         type = self.request.GET.get("type", "")
+        project = self.request.GET.get("project", "")
+
+        filters = {}
 
         if search:
-            queryset = queryset.filter(subject__icontains=search)
-        elif status and priority and type:
-            queryset = queryset.filter(
-                status__name=status, priority__name=priority, type__name=type
-            )
-        elif status and priority:
-            queryset = queryset.filter(status__name=status, priority__name=priority)
-        elif status and type:
-            queryset = queryset.filter(status__name=status, type__name=type)
-        elif priority and type:
-            queryset = queryset.filter(priority__name=priority, type__name=type)
-        elif status:
-            queryset = queryset.filter(status__name=status)
-        elif priority:
-            queryset = queryset.filter(priority__name=priority)
-        elif type:
-            queryset = queryset.filter(type__name=type)
+            filters["subject__icontains"] = search
+
+        if status:
+            filters["status__name"] = status
+
+        if priority:
+            filters["priority__name"] = priority
+
+        if type:
+            filters["type__name"] = type
+
+        if project:
+            filters["project__name"] = project
+
+        queryset = queryset.filter(**filters).order_by("-created_at")
 
         return queryset
+
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -311,14 +320,13 @@ class TaskListView(ListView):
         record_count = queryset.count()
         context["record_count"] = record_count
 
-        # Get all statuses
         context["statuses"] = Status.objects.all()
 
-        # Get all priorities
         context["priorities"] = Priority.objects.all()
 
-        # Get all types
         context["types"] = Type.objects.all()
+
+        context["projects"] = Project.objects.all()
 
         return context
 
@@ -486,3 +494,52 @@ def task_create_comment(request, task_id):
             return HttpResponseRedirect(reverse("task:task_detail", args=(task.id,)))
 
     return HttpResponseRedirect(reverse("task:task_detail", args=(task.id,)))
+
+
+@login_required
+def export_csv(request):
+    response = HttpResponse(
+        content_type='text/csv',
+        headers={"Content-Disposition": 'attachment; filename=Reporte' + str(datetime.datetime.now()) + '.csv'},
+    )
+
+    writer = csv.writer(response)
+    writer.writerow(['Fecha', 'Tarea', 'Horas Trabajadas'])
+
+    total_hours = 0
+
+    # Filter by name
+    search = request.GET.get("search", "")
+
+    # Filters
+    status = request.GET.get("status", "")
+    priority = request.GET.get("priority", "")
+    type = request.GET.get("type", "")
+    project = request.GET.get("project", "")
+
+    filters = {}
+
+    if search:
+        filters["subject__icontains"] = search
+
+    if status:
+        filters["status__name"] = status
+
+    if priority:
+        filters["priority__name"] = priority
+
+    if type:
+        filters["type__name"] = type
+
+    if project:
+            filters["project__name"] = project
+
+    tasks = Task.objects.filter(**filters)
+
+    for task in tasks:
+        writer.writerow([task.created_at, task.subject, task.estimated_time])
+        total_hours += task.estimated_time
+
+    writer.writerow(['', 'Total de Horas trabajadas:', total_hours])
+
+    return response

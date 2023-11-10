@@ -3,7 +3,7 @@
     <ul class="c-pagination__list">
       {% if previous_index %}
         <li class="c-pagination__item">
-          <a class="c-pagination__control" href="?page={{ previous_index }}&search={{ request.GET.search }}&status={{ request.GET.status }}&priority={{ request.GET.priority }}&type={{ request.GET.type }}"><i class="fa fa-caret-left"></i></a>
+          <a class="c-pagination__control" href="?page={{ previous_index }}&search={{ request.GET.search }}&project={{ request.GET.project }}&status={{ request.GET.status }}&priority={{ request.GET.priority }}&type={{ request.GET.type }}"><i class="fa fa-caret-left"></i></a>
         </li>
       {% endif %} {% for i in page_obj.paginator.page_range %}
         <li class="c-pagination__item">
@@ -11,12 +11,12 @@
             <a class="c-pagination__link is-active">{{ i }}</a>
             <span class="current-page">{{ i }}</span>
           {% else %}
-            <a class="c-pagination__link" href="?page={{ i }}&search={{ request.GET.search }}&status={{ request.GET.status }}&priority={{ request.GET.priority }}&type={{ request.GET.type }}">{{ i }}</a>
+            <a class="c-pagination__link" href="?page={{ i }}&search={{ request.GET.search }}&project={{ request.GET.project }}&status={{ request.GET.status }}&priority={{ request.GET.priority }}&type={{ request.GET.type }}">{{ i }}</a>
           {% endif %}
         </li>
       {% endfor %} {% if next_index %}
         <li class="c-pagination__item">
-          <a class="c-pagination__control" href="?page={{ next_index }}&search={{ request.GET.search }}&status={{ request.GET.status }}&priority={{ request.GET.priority }}&type={{ request.GET.type }}"><i class="fa fa-caret-right"></i></a>
+          <a class="c-pagination__control" href="?page={{ next_index }}&search={{ request.GET.search }}&project={{ request.GET.project }}&status={{ request.GET.status }}&priority={{ request.GET.priority }}&type={{ request.GET.type }}"><i class="fa fa-caret-right"></i></a>
         </li>
       {% endif %}
     </ul>
