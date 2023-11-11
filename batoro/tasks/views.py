@@ -1,5 +1,6 @@
 import csv
 import datetime
+import xlwt
 
 
 from django.views.generic import (
@@ -19,6 +20,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.views.generic.edit import FormMixin
 from django.http import JsonResponse, HttpResponse
+from django.utils import timezone
 
 
 from .models import Status, Priority, Type, Task, Attachment, Comentary, Project
@@ -504,14 +506,12 @@ def export_csv(request):
     )
 
     writer = csv.writer(response)
-    writer.writerow(['Fecha', 'Tarea', 'Horas Trabajadas'])
+    writer.writerow(['Fecha de creacion', 'Tarea', 'Horas Trabajadas'])
 
     total_hours = 0
 
-    # Filter by name
-    search = request.GET.get("search", "")
-
     # Filters
+    search = request.GET.get("search", "")
     status = request.GET.get("status", "")
     priority = request.GET.get("priority", "")
     type = request.GET.get("type", "")
@@ -541,5 +541,65 @@ def export_csv(request):
         total_hours += task.estimated_time
 
     writer.writerow(['', 'Total de Horas trabajadas:', total_hours])
+
+    return response
+
+
+@login_required
+def export_excel(request):
+    workbook = xlwt.Workbook()
+
+    worksheet = workbook.add_sheet('Reporte')
+
+    total_hours = 0
+
+    # Filters
+    search = request.GET.get("search", "")
+    status = request.GET.get("status", "")
+    priority = request.GET.get("priority", "")
+    type = request.GET.get("type", "")
+    project = request.GET.get("project", "")
+
+    filters = {}
+
+    if search:
+        filters["subject__icontains"] = search
+
+    if status:
+        filters["status__name"] = status
+
+    if priority:
+        filters["priority__name"] = priority
+
+    if type:
+        filters["type__name"] = type
+
+    if project:
+            filters["project__name"] = project
+
+    datos = Task.objects.filter(**filters)
+
+    encabezados = ['Fecha de creacion', 'Tarea', 'Horas Trabajadas']
+    for col, encabezado in enumerate(encabezados):
+        worksheet.write(0, col, encabezado)
+
+    for row, dato in enumerate(datos, start=1):
+        worksheet.write(row, 0, dato.created_at.strftime('%Y-%m-%d %H:%M:%S'))
+        worksheet.write(row, 1, dato.subject)
+        worksheet.write(row, 2, dato.estimated_time)
+        total_hours += dato.estimated_time
+
+    row += 1
+
+    worksheet.write(row, 1, 'Total de Horas trabajadas:')
+    worksheet.write(row, 2, total_hours)
+
+    for col in range(len(encabezados)):
+        worksheet.col(col).width = 256 * 20
+
+    response = HttpResponse(content_type='application/ms-excel')
+    response['Content-Disposition'] = 'attachment; filename=Reporte' + str(datetime.datetime.now()) + '.xls'
+
+    workbook.save(response)
 
     return response

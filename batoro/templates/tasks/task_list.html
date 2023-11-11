@@ -56,7 +56,7 @@
       
       <div class="c-dropdown__menu dropdown-menu" aria-labelledby="dropdownMenuButton" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 39px, 0px); top: 0px; left: 0px; will-change: transform;">
           <a class="c-dropdown__item dropdown-item" href="{% url "task:export_csv" %}?search={{ request.GET.search }}&project={{ request.GET.project }}&status={{ request.GET.status }}&priority={{ request.GET.priority }}&type={{ request.GET.type }}">CSV</a>
-          <a class="c-dropdown__item dropdown-item" href="#">XML</a>
+          <a class="c-dropdown__item dropdown-item" href="{% url "task:export_excel" %}?search={{ request.GET.search }}&project={{ request.GET.project }}&status={{ request.GET.status }}&priority={{ request.GET.priority }}&type={{ request.GET.type }}">Excel</a>
           <a class="c-dropdown__item dropdown-item" href="#">PDF</a>
       </div>
   </div>
