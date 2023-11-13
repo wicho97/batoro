@@ -14,15 +14,6 @@
       </div>
       <button class="c-btn c-btn--info" type="submit">Buscar</button>
     </form>
-    <div class="c-dropdown dropdown u-ml-auto">
-      <button class="c-btn c-btn--info has-dropdown dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Exportar</button>
-      
-      <div class="c-dropdown__menu dropdown-menu" aria-labelledby="dropdownMenuButton" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 39px, 0px); top: 0px; left: 0px; will-change: transform;">
-          <a class="c-dropdown__item dropdown-item" href="{% url "task:export_csv" %}?search={{ request.GET.search }}&project={{ request.GET.project }}&status={{ request.GET.status }}&priority={{ request.GET.priority }}&type={{ request.GET.type }}">CSV</a>
-          <a class="c-dropdown__item dropdown-item" href="{% url "task:export_excel" %}?search={{ request.GET.search }}&project={{ request.GET.project }}&status={{ request.GET.status }}&priority={{ request.GET.priority }}&type={{ request.GET.type }}">Excel</a>
-          <a class="c-dropdown__item dropdown-item" href="{% url "task:export_pdf" %}?search={{ request.GET.search }}&project={{ request.GET.project }}&status={{ request.GET.status }}&priority={{ request.GET.priority }}&type={{ request.GET.type }}">PDF</a>
-      </div>
-    </div>
   </div>
 
   <div class="container-fluid u-mt-medium">
@@ -38,7 +29,7 @@
         </div>
       </div>
     {% endif %}
-    <div class="row u-mb-large">
+    <div class="row">
       <div class="col-md-12">
         <article class="c-stage" id="stages">
           <a class="c-stage__header u-flex u-justify-between" data-toggle="collapse" href="#stage-panel1" aria-expanded="false" aria-controls="stage-panel1">
@@ -51,7 +42,7 @@
               <i class="fa fa-angle-down u-text-mute"></i>
           </a>
 
-          <div class="c-stage__panel c-stage__panel--mute collapse" id="stage-panel1">
+          <div class="c-stage__panel c-stage__panel--mute collapse show" id="stage-panel1">
             <div class="u-p-medium">
               <div class="row">
                 <div class="col-md-12">
@@ -118,6 +109,15 @@
             <caption class="c-table__title">
               Lista de Tareas
               <small>{{ record_count }} tarea{{ record_count|pluralize }}</small>
+              <div class="c-dropdown dropdown c-table__title-action">
+                <button class="c-btn c-btn--info has-dropdown dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Exportar</button>
+                
+                <div class="c-dropdown__menu dropdown-menu" aria-labelledby="dropdownMenuButton" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 39px, 0px); top: 0px; left: 0px; will-change: transform;">
+                    <a class="c-dropdown__item dropdown-item" href="{% url "task:export_csv" %}?search={{ request.GET.search }}&project={{ request.GET.project }}&status={{ request.GET.status }}&priority={{ request.GET.priority }}&type={{ request.GET.type }}">CSV</a>
+                    <a class="c-dropdown__item dropdown-item" href="{% url "task:export_excel" %}?search={{ request.GET.search }}&project={{ request.GET.project }}&status={{ request.GET.status }}&priority={{ request.GET.priority }}&type={{ request.GET.type }}">Excel</a>
+                    <a class="c-dropdown__item dropdown-item" href="{% url "task:export_pdf" %}?search={{ request.GET.search }}&project={{ request.GET.project }}&status={{ request.GET.status }}&priority={{ request.GET.priority }}&type={{ request.GET.type }}">PDF</a>
+                </div>
+              </div>
             </caption>
 
             <thead class="c-table__head c-table__head--slim">
