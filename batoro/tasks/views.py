@@ -1,6 +1,7 @@
 import csv
 import datetime
 import xlwt
+import tempfile
 
 
 from django.views.generic import (
@@ -20,8 +21,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.views.generic.edit import FormMixin
 from django.http import JsonResponse, HttpResponse
-from django.utils import timezone
-
+from django.template.loader import render_to_string
+from weasyprint import HTML
+from django.db.models import Sum
 
 from .models import Status, Priority, Type, Task, Attachment, Comentary, Project
 from .forms import (
@@ -500,10 +502,8 @@ def task_create_comment(request, task_id):
 
 @login_required
 def export_csv(request):
-    response = HttpResponse(
-        content_type='text/csv',
-        headers={"Content-Disposition": 'attachment; filename=Reporte' + str(datetime.datetime.now()) + '.csv'},
-    )
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename=Reporte' + str(datetime.datetime.now()) + '.csv'
 
     writer = csv.writer(response)
     writer.writerow(['Fecha de creacion', 'Tarea', 'Horas Trabajadas'])
@@ -601,5 +601,53 @@ def export_excel(request):
     response['Content-Disposition'] = 'attachment; filename=Reporte' + str(datetime.datetime.now()) + '.xls'
 
     workbook.save(response)
+
+    return response
+
+
+@login_required
+def export_pdf(request):
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename=Reporte' + str(datetime.datetime.now()) + '.pdf'
+    response['Content-Transfer-Encoding'] = 'binary'
+
+    # Filters
+    search = request.GET.get("search", "")
+    status = request.GET.get("status", "")
+    priority = request.GET.get("priority", "")
+    type = request.GET.get("type", "")
+    project = request.GET.get("project", "")
+
+    filters = {}
+
+    if search:
+        filters["subject__icontains"] = search
+
+    if status:
+        filters["status__name"] = status
+
+    if priority:
+        filters["priority__name"] = priority
+
+    if type:
+        filters["type__name"] = type
+
+    if project:
+            filters["project__name"] = project
+
+    tasks = Task.objects.filter(**filters)
+
+    sum = tasks.aggregate(Sum('estimated_time'))
+
+    html_string = render_to_string('tasks/pdf_output.html', {'tasks':tasks, 'total':sum['estimated_time__sum'], 'date': str(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))})
+    html = HTML(string=html_string, base_url=request.build_absolute_uri())
+
+    result = html.write_pdf()
+
+    with tempfile.NamedTemporaryFile(delete=True) as output:
+        output.write(result)
+        output.flush()
+        output = open(output.name, 'rb')
+        response.write(output.read())
 
     return response

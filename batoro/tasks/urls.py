@@ -23,6 +23,7 @@ from .views import (
     task_create_comment,
     export_csv,
     export_excel,
+    export_pdf,
 )
 
 
@@ -88,4 +89,5 @@ urlpatterns = [
     # Reports
     path(route="export-csv/", view=export_csv, name="export_csv"),
     path(route="export-excel/", view=export_excel, name="export_excel"),
+    path(route="export-pdf/", view=export_pdf, name="export_pdf"),
 ]
