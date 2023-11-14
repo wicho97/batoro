@@ -48,7 +48,7 @@
                 <div class="col-md-12">
                   <form style="width: 100%;" method="get">
                     <div class="row">
-                      <div class="col-md-3">
+                      <div class="col-md-4 u-mb-small">
                         <div class="c-field">
                           <select class="c-select has-search" name="project">
                             <option value="">Elegir proyecto</option>
@@ -58,7 +58,7 @@
                           </select>
                         </div>
                       </div>
-                      <div class="col-md-3">
+                      <div class="col-md-4 u-mb-small">
                         <div class="c-field">
                           <select class="c-select has-search" name="status">
                             <option value="">Elegir estado</option>
@@ -68,7 +68,7 @@
                           </select>
                         </div>
                       </div>
-                      <div class="col-md-3">
+                      <div class="col-md-4 u-mb-small">
                         <div class="c-field">
                           <select class="c-select has-search" name="priority">
                             <option value="">Elegir prioridad</option>
@@ -78,7 +78,7 @@
                           </select>
                         </div>
                       </div>
-                      <div class="col-md-3">
+                      <div class="col-md-4 u-mb-small">
                         <div class="c-field">
                           <select class="c-select has-search" name="type">
                             <option value="">Elegir tipo</option>
@@ -88,8 +88,21 @@
                           </select>
                         </div>
                       </div>
+                      <div class="col-md-4 u-mb-small">
+                        <div class="c-field has-addon-left">
+                          <span class="c-field__addon"><i class="fa fa-calendar"></i></span>
+                          <input class="c-input" data-toggle="datepicker" type="text" placeholder="Fecha desde" name="date_from" value="{{ request.GET.date_from }}">
+                        </div>
+                      </div>
+                      <div class="col-md-4 u-mb-small">
+                        <div class="c-field has-addon-left">
+                          <span class="c-field__addon"><i class="fa fa-calendar"></i></span>
+                          <input class="c-input" data-toggle="datepicker" type="text" placeholder="Fecha hasta" name="date_until" value="{{ request.GET.date_until }}">
+                        </div>
+                      </div>
                       <div class="col-md-12">
-                        <button class="c-btn c-btn--info u-mt-small" type="submit">Filtrar</button>
+                        <button class="c-btn c-btn--info" type="submit">Filtrar</button>
+                        <a class="c-btn c-btn--info" href="{% url "task:task_list" %}" type="submit">Eliminar filtros</a>
                       </div>
                     </div>
                   </form>
@@ -113,9 +126,9 @@
                 <button class="c-btn c-btn--info has-dropdown dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Exportar</button>
                 
                 <div class="c-dropdown__menu dropdown-menu" aria-labelledby="dropdownMenuButton" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 39px, 0px); top: 0px; left: 0px; will-change: transform;">
-                    <a class="c-dropdown__item dropdown-item" href="{% url "task:export_csv" %}?search={{ request.GET.search }}&project={{ request.GET.project }}&status={{ request.GET.status }}&priority={{ request.GET.priority }}&type={{ request.GET.type }}">CSV</a>
-                    <a class="c-dropdown__item dropdown-item" href="{% url "task:export_excel" %}?search={{ request.GET.search }}&project={{ request.GET.project }}&status={{ request.GET.status }}&priority={{ request.GET.priority }}&type={{ request.GET.type }}">Excel</a>
-                    <a class="c-dropdown__item dropdown-item" href="{% url "task:export_pdf" %}?search={{ request.GET.search }}&project={{ request.GET.project }}&status={{ request.GET.status }}&priority={{ request.GET.priority }}&type={{ request.GET.type }}">PDF</a>
+                    <a class="c-dropdown__item dropdown-item" href="{% url "task:export_csv" %}?search={{ request.GET.search }}&project={{ request.GET.project }}&status={{ request.GET.status }}&priority={{ request.GET.priority }}&type={{ request.GET.type }}&date_from={{ request.GET.date_from }}&date_until={{ request.GET.date_until }}">CSV</a>
+                    <a class="c-dropdown__item dropdown-item" href="{% url "task:export_excel" %}?search={{ request.GET.search }}&project={{ request.GET.project }}&status={{ request.GET.status }}&priority={{ request.GET.priority }}&type={{ request.GET.type }}&date_from={{ request.GET.date_from }}&date_until={{ request.GET.date_until }}">Excel</a>
+                    <a class="c-dropdown__item dropdown-item" href="{% url "task:export_pdf" %}?search={{ request.GET.search }}&project={{ request.GET.project }}&status={{ request.GET.status }}&priority={{ request.GET.priority }}&type={{ request.GET.type }}&date_from={{ request.GET.date_from }}&date_until={{ request.GET.date_until }}">PDF</a>
                 </div>
               </div>
             </caption>

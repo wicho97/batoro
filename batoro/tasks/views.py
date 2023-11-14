@@ -279,6 +279,8 @@ class TaskListView(ListView):
         priority = self.request.GET.get("priority", "")
         type = self.request.GET.get("type", "")
         project = self.request.GET.get("project", "")
+        date_from = self.request.GET.get("date_from", "")
+        date_until = self.request.GET.get("date_until", "")
 
         filters = {}
 
@@ -296,6 +298,15 @@ class TaskListView(ListView):
 
         if project:
             filters["project__name"] = project
+
+        if date_from:
+            date_from = datetime.datetime.strptime(date_from, "%m/%d/%Y").strftime("%Y-%m-%d")
+            filters["created_at__gte"] = date_from
+
+        if date_until:
+            date_until = datetime.datetime.strptime(date_until, "%m/%d/%Y").strftime("%Y-%m-%d")
+            date_until = datetime.datetime.strptime(date_until, "%Y-%m-%d") + datetime.timedelta(hours=23, minutes=59, seconds=59)
+            filters["created_at__lte"] = date_until
 
         queryset = queryset.filter(**filters).order_by("-created_at")
 
@@ -516,6 +527,8 @@ def export_csv(request):
     priority = request.GET.get("priority", "")
     type = request.GET.get("type", "")
     project = request.GET.get("project", "")
+    date_from = request.GET.get("date_from", "")
+    date_until = request.GET.get("date_until", "")
 
     filters = {}
 
@@ -533,6 +546,14 @@ def export_csv(request):
 
     if project:
             filters["project__name"] = project
+
+    if date_from:
+            date_from = datetime.datetime.strptime(date_from, "%m/%d/%Y").strftime("%Y-%m-%d")
+            filters["created_at__gte"] = date_from
+
+    if date_until:
+        date_until = datetime.datetime.strptime(date_until, "%m/%d/%Y").strftime("%Y-%m-%d")
+        date_until = datetime.datetime.strptime(date_until, "%Y-%m-%d") + datetime.timedelta(hours=23, minutes=59, seconds=59)
 
     tasks = Task.objects.filter(**filters)
 
@@ -559,6 +580,8 @@ def export_excel(request):
     priority = request.GET.get("priority", "")
     type = request.GET.get("type", "")
     project = request.GET.get("project", "")
+    date_from = request.GET.get("date_from", "")
+    date_until = request.GET.get("date_until", "")
 
     filters = {}
 
@@ -576,6 +599,14 @@ def export_excel(request):
 
     if project:
             filters["project__name"] = project
+
+    if date_from:
+            date_from = datetime.datetime.strptime(date_from, "%m/%d/%Y").strftime("%Y-%m-%d")
+            filters["created_at__gte"] = date_from
+
+    if date_until:
+        date_until = datetime.datetime.strptime(date_until, "%m/%d/%Y").strftime("%Y-%m-%d")
+        date_until = datetime.datetime.strptime(date_until, "%Y-%m-%d") + datetime.timedelta(hours=23, minutes=59, seconds=59)
 
     datos = Task.objects.filter(**filters)
 
@@ -617,6 +648,8 @@ def export_pdf(request):
     priority = request.GET.get("priority", "")
     type = request.GET.get("type", "")
     project = request.GET.get("project", "")
+    date_from = request.GET.get("date_from", "")
+    date_until = request.GET.get("date_until", "")
 
     filters = {}
 
@@ -634,6 +667,14 @@ def export_pdf(request):
 
     if project:
             filters["project__name"] = project
+
+    if date_from:
+            date_from = datetime.datetime.strptime(date_from, "%m/%d/%Y").strftime("%Y-%m-%d")
+            filters["created_at__gte"] = date_from
+
+    if date_until:
+        date_until = datetime.datetime.strptime(date_until, "%m/%d/%Y").strftime("%Y-%m-%d")
+        date_until = datetime.datetime.strptime(date_until, "%Y-%m-%d") + datetime.timedelta(hours=23, minutes=59, seconds=59)
 
     tasks = Task.objects.filter(**filters)
 
