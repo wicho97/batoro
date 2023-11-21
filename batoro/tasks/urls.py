@@ -24,6 +24,8 @@ from .views import (
     export_csv,
     export_excel,
     export_pdf,
+    TaskMeView,
+    TaskCreatedByMeView,
 )
 
 
@@ -77,6 +79,9 @@ urlpatterns = [
     path(route="update/<int:pk>/", view=TaskUpdateView.as_view(), name="task_update"),
     path(route="detail/<int:pk>/", view=TaskDetailView.as_view(), name="task_detail"),
     path(route="delete/<int:task_id>/", view=delete_task, name="task_delete"),
+
+    path(route="me/", view=TaskMeView.as_view(), name="task_me"),
+    path(route="me/created/", view=TaskCreatedByMeView.as_view(), name="task_created_by_me"),
 
     # Attachments
     path(route="attachment/<int:task_id>/", view=task_upload_attachment, name="task_upload_file"),

@@ -692,3 +692,99 @@ def export_pdf(request):
         response.write(output.read())
 
     return response
+
+
+@method_decorator(login_required, name="dispatch")
+class TaskMeView(ListView):
+    model = Task
+    template_name = "tasks/task_me.html"
+    context_object_name = "tasks"
+    paginate_by = 10
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+
+        queryset = queryset.filter(assigned_to=self.request.user).order_by("-created_at")
+
+        return queryset
+
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        # pagination
+        queryset = self.get_queryset()
+        paginator = Paginator(queryset, self.paginate_by)
+        page_number = self.request.GET.get("page")
+        page_obj = paginator.get_page(page_number)
+
+        context["page_obj"] = page_obj
+        context["is_paginated"] = page_obj.has_other_pages()
+        previous_index = (
+            page_obj.previous_page_number() if page_obj.has_previous() else 0
+        )
+        next_index = page_obj.next_page_number() if page_obj.has_next() else 0
+        context["previous_index"] = previous_index
+        context["next_index"] = next_index
+
+        # Get the total number of records
+        record_count = queryset.count()
+        context["record_count"] = record_count
+
+        context["statuses"] = Status.objects.all()
+
+        context["priorities"] = Priority.objects.all()
+
+        context["types"] = Type.objects.all()
+
+        context["projects"] = Project.objects.all()
+
+        return context
+
+
+@method_decorator(login_required, name="dispatch")
+class TaskCreatedByMeView(ListView):
+    model = Task
+    template_name = "tasks/task_created_by_me.html"
+    context_object_name = "tasks"
+    paginate_by = 10
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+
+        queryset = queryset.filter(creator=self.request.user).order_by("-created_at")
+
+        return queryset
+
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        # pagination
+        queryset = self.get_queryset()
+        paginator = Paginator(queryset, self.paginate_by)
+        page_number = self.request.GET.get("page")
+        page_obj = paginator.get_page(page_number)
+
+        context["page_obj"] = page_obj
+        context["is_paginated"] = page_obj.has_other_pages()
+        previous_index = (
+            page_obj.previous_page_number() if page_obj.has_previous() else 0
+        )
+        next_index = page_obj.next_page_number() if page_obj.has_next() else 0
+        context["previous_index"] = previous_index
+        context["next_index"] = next_index
+
+        # Get the total number of records
+        record_count = queryset.count()
+        context["record_count"] = record_count
+
+        context["statuses"] = Status.objects.all()
+
+        context["priorities"] = Priority.objects.all()
+
+        context["types"] = Type.objects.all()
+
+        context["projects"] = Project.objects.all()
+
+        return context
