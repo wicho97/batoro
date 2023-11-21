@@ -3,6 +3,9 @@ from django.shortcuts import render
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.shortcuts import redirect
+
+
 from .forms import UserRegistrationForm, UserEditForm, ProfileEditForm
 from .models import Profile
 
@@ -61,3 +64,7 @@ def edit(request):
                   {'user_form': user_form,
                    'profile_form': profile_form,
                    'section': 'account_settings'})
+
+
+def redirect_page(request):
+    return redirect('tasks/me/')
