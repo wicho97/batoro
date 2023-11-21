@@ -77,6 +77,9 @@
     
                             <div class="c-field u-mb-small">
                                 <label class="c-field__label" for="website">Foto</label>
+                                {% if profile_form.photo.value %}
+                                <img src="{{ profile_form.photo.value.url }}" height="200px">
+                                {% endif %}
                                 {{ profile_form.photo }}
                                 {% for error in profile_form.photo.errors %}
                                     <small class="c-field__message u-color-danger">
