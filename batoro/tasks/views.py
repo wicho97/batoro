@@ -700,12 +700,17 @@ class TaskMeView(ListView):
     template_name = "tasks/task_me.html"
     context_object_name = "tasks"
     paginate_by = 10
-
+    
     def get_queryset(self):
         queryset = super().get_queryset()
 
         queryset = queryset.filter(assigned_to=self.request.user).order_by("-created_at")
 
+        # Filter by name
+        search = self.request.GET.get("search", "")
+
+        if search:
+            queryset = queryset.filter(subject__icontains=search)
         return queryset
 
 
@@ -752,8 +757,13 @@ class TaskCreatedByMeView(ListView):
     def get_queryset(self):
         queryset = super().get_queryset()
 
-        queryset = queryset.filter(creator=self.request.user).order_by("-created_at")
+        queryset = queryset.filter(assigned_to=self.request.user).order_by("-created_at")
 
+        # Filter by name
+        search = self.request.GET.get("search", "")
+
+        if search:
+            queryset = queryset.filter(subject__icontains=search)
         return queryset
 
 
