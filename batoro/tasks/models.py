@@ -70,7 +70,7 @@ class Task(TimestampMixin, models.Model):
     project = models.ForeignKey(Project, on_delete=models.SET_NULL, null=True)
     start_date = models.DateField(blank=True, null=True)
     finish_date = models.DateField(blank=True, null=True)
-    estimated_time = models.DecimalField(max_digits=5, decimal_places=2)
+    estimated_time = models.DecimalField(blank=True, null=True, max_digits=5, decimal_places=2)
 
     def __str__(self):
         return self.subject

@@ -1,0 +1,58 @@
+{% extends 'base_2.html' %}
+
+{% block title %}
+  Tarea - Usuarios
+{% endblock %}
+
+{% block content %}
+  <div class="container-fluid u-mt-medium">
+    <div class="row">
+      <div class="col-md-12">
+        <table class="c-table c-table--highlight u-mb-small">
+          <caption class="c-table__title">
+            Usuarios
+            <small>{{ users|length }} usuario{{ users|length|pluralize }}</small>
+          </caption>
+
+          <thead class="c-table__head c-table__head--slim">
+            <tr class="c-table__row">
+              <th class="c-table__cell c-table__cell--head">Usuario</th>
+              <th class="c-table__cell c-table__cell--head">Proyecto</th>
+              <th class="c-table__cell c-table__cell--head">Tarea</th>
+              <th class="c-table__cell c-table__cell--head">Actualizado</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {% for user_info in user_data %}
+              <tr class="c-table__row">
+                <td class="c-table__cell">
+                  {% if user_info.user %}
+                    {{ user_info.user.username }}
+                  {% endif %}
+                </td>
+                {% if not user_info.project and not user_info.task and not user_info.last_updated %}
+                  <td class="c-table__cell" style="text-align: center;" colspan="3">
+                    <span class="c-badge c-badge--primary">
+                      No hay tareas selecionadas
+                    </span>
+                  </td>
+                {% else %}
+                  {% if user_info.project %}
+                    <td class="c-table__cell">{{ user_info.project }}</td>
+                  {% endif %}
+                  {% if user_info.task %}
+                    <td class="c-table__cell">{{ user_info.task }}</td>
+                  {% endif %}
+                  {% if user_info.last_updated %}
+                    <td class="c-table__cell">{{ user_info.last_updated }}</td>
+                  {% endif %}
+                {% endif %}
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+{% endblock %}

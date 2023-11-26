@@ -26,6 +26,7 @@ from .views import (
     export_pdf,
     TaskMeView,
     TaskCreatedByMeView,
+    TaskUsers,
 )
 
 
@@ -82,6 +83,8 @@ urlpatterns = [
 
     path(route="me/", view=TaskMeView.as_view(), name="task_me"),
     path(route="me/created/", view=TaskCreatedByMeView.as_view(), name="task_created_by_me"),
+
+    path(route="users/", view=TaskUsers.as_view(), name="task_users"),
 
     # Attachments
     path(route="attachment/<int:task_id>/", view=task_upload_attachment, name="task_upload_file"),

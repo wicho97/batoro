@@ -23,7 +23,7 @@ from django.views.generic.edit import FormMixin
 from django.http import JsonResponse, HttpResponse
 from django.template.loader import render_to_string
 from weasyprint import HTML
-from django.db.models import Sum
+from django.db.models import Sum, Max
 
 from .models import Status, Priority, Type, Task, Attachment, Comentary, Project
 from .forms import (
@@ -798,3 +798,24 @@ class TaskCreatedByMeView(ListView):
         context["projects"] = Project.objects.all()
 
         return context
+
+
+@method_decorator(login_required, name="dispatch")
+class TaskUsers(ListView):
+    model = User
+    template_name = "tasks/task_users.html"
+    context_object_name = "users"
+
+    def get_context_data(self, **kwargs):
+       context = super().get_context_data(**kwargs)
+       users = User.objects.all()
+       user_data = []
+       for user in users:
+           tasks = Task.objects.filter(assigned_to=user, status__name='En curso').order_by('-updated_at')
+           if tasks:
+               task = tasks[0]  # Obtiene la última tarea actualizada
+               user_data.append({'user': user, 'task': task.subject, 'project': task.project, 'last_updated': task.updated_at})
+           else:
+               user_data.append({'user': user, 'task': None, 'project': None, 'last_updated': None})
+       context['user_data'] = user_data
+       return context
