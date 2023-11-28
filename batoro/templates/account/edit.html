@@ -49,6 +49,16 @@
                                     </small>
                                 {% endfor %}
                             </div>
+
+                            <div class="c-field u-mb-small">
+                                <label class="c-field__label">Slack User ID</label>
+                                {{ profile_form.slack_user_id }}
+                                {% for error in profile_form.slack_user_id.errors %}
+                                    <small class="c-field__message u-color-danger">
+                                        <i class="fa fa-times-circle"></i>{{ error }}
+                                    </small>
+                                {% endfor %}
+                            </div>
                         </div>
         
                         <div class="col-lg-6">
@@ -78,7 +88,7 @@
                             <div class="c-field u-mb-small">
                                 <label class="c-field__label" for="website">Foto</label>
                                 {% if profile_form.photo.value %}
-                                <img src="{{ profile_form.photo.value.url }}" height="200px">
+                                <img src="{{ profile_form.photo.value.url }}" style="height: 100px;">
                                 {% endif %}
                                 {{ profile_form.photo }}
                                 {% for error in profile_form.photo.errors %}

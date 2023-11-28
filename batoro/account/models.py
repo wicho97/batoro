@@ -23,6 +23,7 @@ class Profile(models.Model):
         blank=True,
         choices=GENDER_CHOICES,
         max_length=30)
+    slack_user_id = models.CharField(max_length=50, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

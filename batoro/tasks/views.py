@@ -23,10 +23,18 @@ from django.views.generic.edit import FormMixin
 from django.http import JsonResponse, HttpResponse
 from django.template.loader import render_to_string
 from weasyprint import HTML
-from django.db.models import Sum, Max
+from django.db.models import Sum
 
-from .models import Status, Priority, Type, Task, Attachment, Comentary, Project
-from .forms import (
+from projects.models import Project
+from tasks.models import (
+    Status, 
+    Priority, 
+    Type, 
+    Task,
+    Attachment, 
+    Comentary,
+)
+from tasks.forms import (
     StatusForm,
     PriorityForm,
     TypeForm,

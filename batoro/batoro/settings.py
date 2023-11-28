@@ -173,3 +173,7 @@ CKEDITOR_CONFIGS = {
         'removePlugins': 'exportpdf',
     },
 }
+
+# Slack
+
+SLACK_API_TOKEN = 'xoxb-6246398185093-6242704461238-4NTOrzV8hy0uXYLdnKAwDy5e'
