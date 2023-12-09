@@ -47,6 +47,7 @@ INSTALLED_APPS = [
 
     # Other apps
     'ckeditor',
+    'django_extensions',
 ]
 
 MIDDLEWARE = [
@@ -177,3 +178,9 @@ CKEDITOR_CONFIGS = {
 # Slack
 
 SLACK_API_TOKEN = 'xoxb-6246398185093-6242704461238-4NTOrzV8hy0uXYLdnKAwDy5e'
+
+
+GRAPH_MODELS ={
+'all_applications': True,
+'graph_models': True,
+}
