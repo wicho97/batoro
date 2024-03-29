@@ -68,5 +68,5 @@ python3 manage.py runserver
 
 Al iniciar sesión con el `superuser` por primera vez y acceder a la ruta `http://127.0.0.1:8000/account/edit/` no mostrará un error, para solucionar esto debemos accedemos a la ruta `http://127.0.0.1:8000/admin/account/profile/add/` y crear el perfil del usuario.
 
-Dentro del perfil del usuario se encuentra el campo `Slack user id` este campo sirve para enviar las notificaciones al usuario mediante `slack`, en este campo debemos colocar el ID de usuario de nuestra cuenta de `slack`
+Dentro del perfil del usuario se encuentra el campo `Slack user id` este campo sirve para enviar las notificaciones al usuario mediante `slack`, en este campo debemos colocar el ID de usuario de nuestra cuenta de `slack`.
 
